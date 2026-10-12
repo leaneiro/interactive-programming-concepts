@@ -1,7 +1,8 @@
-import type {
-  Step,
-  StepDescription,
-  VariableValue,
+import {
+  emptyReference,
+  type Step,
+  type StepDescription,
+  type VariableValue,
 } from "@/algorithms/algorithm";
 import { code, linesOf, rich } from "@/algorithms/richText";
 import {
@@ -111,7 +112,7 @@ export function traceBstInsert({
       return;
     }
 
-    variables.currentNode = "null";
+    variables.currentNode = emptyReference;
     record({
       region: "createNode",
       caption: rich`empty spot → new node ${code(value)}`,
@@ -145,7 +146,7 @@ export function traceBstInsert({
     const leaf = createLeaf(value);
     tree = leaf;
     focusedNodeId = leaf.id;
-    variables.currentNode = "null";
+    variables.currentNode = emptyReference;
 
     record({
       region: "createNode",

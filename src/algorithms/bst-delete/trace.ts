@@ -1,7 +1,8 @@
-import type {
-  Step,
-  StepDescription,
-  VariableValue,
+import {
+  emptyReference,
+  type Step,
+  type StepDescription,
+  type VariableValue,
 } from "@/algorithms/algorithm";
 import { code, linesOf, rich } from "@/algorithms/richText";
 import {
@@ -73,11 +74,11 @@ export function traceBstDelete({
     variables.value = target;
 
     if (node === null) {
-      variables.currentNode = "null";
+      variables.currentNode = emptyReference;
       record({
         region: "notFound",
         caption: rich`${code(target)} is not here`,
-        historyEntry: "return null",
+        historyEntry: "not found",
         activeVariables: ["currentNode"],
         explanation: rich`This subtree is empty (${linesOf("notFound")}), so ${code(target)} is not in the tree and nothing changes.`,
       });
@@ -195,7 +196,7 @@ export function traceBstDelete({
         region: "removeLeaf",
         caption: rich`leaf → remove ${code(node.value)}`,
         historyEntry: `remove(${node.value})`,
-        explanation: rich`${code(node.value)} has no children, so the function returns ${code("null")} and the parent simply loses this child (${linesOf("removeLeaf")}).`,
+        explanation: rich`${code(node.value)} has no children, so nothing takes its place and the parent simply loses this child (${linesOf("removeLeaf")}).`,
       });
       return;
     }

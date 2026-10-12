@@ -1,7 +1,8 @@
-import type {
-  Step,
-  StepDescription,
-  VariableValue,
+import {
+  emptyReference,
+  type Step,
+  type StepDescription,
+  type VariableValue,
 } from "@/algorithms/algorithm";
 import { code, linesOf, rich } from "@/algorithms/richText";
 import type { TreeNode } from "@/structures/tree/binarySearchTree";
@@ -71,7 +72,7 @@ export function traceBstSearch({
         caption: rich`${code(`${target} = ${node.value}`)} → found`,
         historyEntry: `cmp(${target},${node.value}) → found`,
         activeVariables: ["currentNode"],
-        explanation: rich`The target ${code(target)} is equal to the value in this node, so the search is over and the answer is ${code("true")}.`,
+        explanation: rich`The target ${code(target)} is equal to the value in this node, so the search is over: the value is in the tree.`,
       });
       return steps;
     }
@@ -97,14 +98,14 @@ export function traceBstSearch({
     }
   }
 
-  variables.currentNode = "null";
+  variables.currentNode = emptyReference;
 
   record({
     region: "notFound",
     caption: rich`${code(target)} is not here`,
-    historyEntry: "return false",
+    historyEntry: "not found",
     activeVariables: ["currentNode"],
-    explanation: rich`The search ran out of nodes: there is nowhere left to look, so ${code(target)} is not in the tree and the answer is ${code("false")}.`,
+    explanation: rich`The search ran out of nodes: there is nowhere left to look, so ${code(target)} is not in the tree.`,
   });
 
   return steps;

@@ -293,7 +293,7 @@ An adapter says how to find the function in a snippet, how to write each kind of
 - Names say what things are, in full words. The linter rejects one-letter identifiers other than `x` and `y`.
 - No comments. If a piece of code needs one, rename or extract until it does not.
 - Tracers are pure. They never change their input, and every step carries its own snapshot.
-- Step texts stay language-neutral: refer to lines with `linesOf` and avoid variable names that only exist in one snippet.
+- Step texts stay language-neutral: refer to lines with `linesOf`, avoid variable names that only exist in one snippet, and avoid literals such as `null` or `true`, which change from one language to the next. A variable that points at nothing holds `emptyReference`.
 - Run `npm run lint`, `npm run format` and `npm test` before opening a pull request. CI runs the same checks.
 
 ## License

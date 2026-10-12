@@ -34,6 +34,8 @@ export interface Snippet<
 
 export type VariableValue = number | string | null;
 
+export const emptyReference = "∅";
+
 export interface Counter {
   label: string;
   value: number;
