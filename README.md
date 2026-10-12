@@ -6,14 +6,14 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 
 ## What is inside
 
-| Algorithm      | Structure          | Languages          |
-| -------------- | ------------------ | ------------------ |
-| Bubble Sort    | Array              | TypeScript, Python |
-| Selection Sort | Array              | TypeScript         |
-| BST Search     | Binary search tree | TypeScript         |
-| BST Insert     | Binary search tree | TypeScript         |
-| BST Delete     | Binary search tree | TypeScript         |
-| BFS            | Graph              | TypeScript         |
+| Algorithm      | Structure          | Languages              |
+| -------------- | ------------------ | ---------------------- |
+| Bubble Sort    | Array              | TypeScript, Python, Go |
+| Selection Sort | Array              | TypeScript             |
+| BST Search     | Binary search tree | TypeScript             |
+| BST Insert     | Binary search tree | TypeScript             |
+| BST Delete     | Binary search tree | TypeScript             |
+| BFS            | Graph              | TypeScript             |
 
 The studio has a timeline you can scrub, a history you can click, a memory and variables panel, and light and dark themes.
 

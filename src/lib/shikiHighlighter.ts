@@ -6,6 +6,7 @@ import type { Highlight } from "./highlighter";
 const grammars = {
   typescript: () => import("shiki/langs/typescript.mjs"),
   python: () => import("shiki/langs/python.mjs"),
+  go: () => import("shiki/langs/go.mjs"),
 } satisfies Record<LanguageId, () => Promise<unknown>>;
 
 const themeName = "algo-lab";
@@ -35,7 +36,13 @@ const theme = {
       settings: { foreground: "var(--color-syntax-keyword)" },
     },
     {
-      scope: ["support.type", "entity.name.type"],
+      scope: [
+        "support.type",
+        "entity.name.type",
+        "storage.type.numeric.go",
+        "storage.type.string.go",
+        "storage.type.boolean.go",
+      ],
       settings: { foreground: "var(--color-syntax-type)" },
     },
     {
