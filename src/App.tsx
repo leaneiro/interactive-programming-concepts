@@ -1,28 +1,28 @@
 import { useState } from "react";
 import { algorithms } from "@/algorithms";
 import type { Algorithm } from "@/algorithms/algorithm";
-import type { LanguageId } from "@/algorithms/languages";
 import { CodeColumn } from "@/components/CodeColumn";
 import { HistorySection } from "@/components/HistorySection";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { MemorySection } from "@/components/MemorySection";
 import { Sidebar } from "@/components/Sidebar";
 import { StudioHeader } from "@/components/StudioHeader";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Timeline } from "@/components/Timeline";
 import { Transport } from "@/components/Transport";
 import { VariablesSection } from "@/components/VariablesSection";
+import { useLanguagePreferences } from "@/hooks/useLanguagePreferences";
 import { usePlayback } from "@/hooks/usePlayback";
 import { usePlaybackShortcuts } from "@/hooks/usePlaybackShortcuts";
 import { useTheme } from "@/hooks/useTheme";
 import { StructureView } from "@/structures/StructureView";
 
 const defaultAlgorithm = algorithms[0];
-const defaultLanguageId: LanguageId = "typescript";
 
 export function App() {
   const { theme, toggleTheme } = useTheme();
   const [algorithm, setAlgorithm] = useState(defaultAlgorithm);
-  const [preferredLanguageId, setPreferredLanguageId] =
-    useState(defaultLanguageId);
+  const languagePreferences = useLanguagePreferences();
   const [steps, setSteps] = useState(defaultAlgorithm.createTrace);
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const playback = usePlayback(steps.length);
@@ -30,9 +30,16 @@ export function App() {
 
   const step = steps[playback.stepIndex];
   const snippet =
-    algorithm.snippets.find(
-      (candidate) => candidate.languageId === preferredLanguageId,
-    ) ?? algorithm.snippets[0];
+    [
+      languagePreferences.preferredLanguageId,
+      ...languagePreferences.favoriteLanguageIds,
+    ]
+      .map((languageId) =>
+        algorithm.snippets.find(
+          (candidate) => candidate.languageId === languageId,
+        ),
+      )
+      .find((candidate) => candidate !== undefined) ?? algorithm.snippets[0];
 
   function startNewTrace(nextAlgorithm: Algorithm): void {
     setAlgorithm(nextAlgorithm);
@@ -59,14 +66,21 @@ export function App() {
       <div className="grid min-h-0 min-w-0 grid-rows-[3.75rem_minmax(0,1fr)]">
         <StudioHeader
           algorithm={algorithm}
-          languageId={snippet.languageId}
-          theme={theme}
-          onSelectLanguage={setPreferredLanguageId}
-          onToggleTheme={toggleTheme}
           onOpenNavigation={() => {
             setIsNavigationOpen(true);
           }}
-        />
+        >
+          <LanguageSwitch
+            favoriteLanguageIds={languagePreferences.favoriteLanguageIds}
+            availableLanguageIds={algorithm.snippets.map(
+              (candidate) => candidate.languageId,
+            )}
+            shownLanguageId={snippet.languageId}
+            onSelect={languagePreferences.selectLanguage}
+            onToggleFavorite={languagePreferences.toggleFavorite}
+          />
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        </StudioHeader>
 
         <div className="grid min-h-0 split:grid-cols-[minmax(0,1fr)_30rem]">
           <main className="@container grid min-h-0 grid-rows-[3.25rem_22rem_auto_auto] border-border split:grid-rows-[3.25rem_minmax(0,3fr)_minmax(0,2fr)_auto] split:border-r">

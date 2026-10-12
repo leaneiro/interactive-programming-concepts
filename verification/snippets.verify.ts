@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { algorithms } from "@/algorithms";
-import { languages, type LanguageId } from "@/algorithms/languages";
+import { languageIds, languages } from "@/algorithms/languages";
 import { verifications } from "./cases";
 import { adapters } from "./languages";
 import { describeArgument, type VerificationCase } from "./verification";
@@ -8,7 +8,6 @@ import { describeArgument, type VerificationCase } from "./verification";
 const mustRunEveryLanguage = process.env.REQUIRE_ALL_TOOLCHAINS === "true";
 
 beforeAll(async () => {
-  const languageIds = Object.keys(adapters) as LanguageId[];
   const toolchains = await Promise.all(
     languageIds.map(async (languageId) => {
       const version = await adapters[languageId].findToolchainVersion();
