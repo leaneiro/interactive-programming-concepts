@@ -1,5 +1,6 @@
 import { defineAlgorithm, line, lines } from "@/algorithms/algorithm";
 import { createRandomArray } from "@/structures/array/randomArray";
+import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
@@ -65,6 +66,23 @@ export const bubbleSort = defineAlgorithm({
       variableNames: {
         temporary: "t",
         length: "a.length",
+        outerIndex: "i",
+        innerIndex: "j",
+      },
+    },
+    {
+      languageId: "cpp",
+      code: cppCode,
+      regions: {
+        signature: line(1),
+        outerLoop: line(3),
+        innerLoop: line(4),
+        compare: line(5),
+        swap: line(6),
+        returnResult: line(10),
+      },
+      variableNames: {
+        length: "n",
         outerIndex: "i",
         innerIndex: "j",
       },

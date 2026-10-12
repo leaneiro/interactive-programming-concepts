@@ -7,6 +7,7 @@ const grammars = {
   typescript: () => import("shiki/langs/typescript.mjs"),
   python: () => import("shiki/langs/python.mjs"),
   java: () => import("shiki/langs/java.mjs"),
+  cpp: () => import("shiki/langs/cpp.mjs"),
   go: () => import("shiki/langs/go.mjs"),
 } satisfies Record<LanguageId, () => Promise<unknown>>;
 
@@ -41,6 +42,7 @@ const theme = {
         "support.type",
         "entity.name.type",
         "storage.type.primitive",
+        "storage.type.built-in",
         "storage.type.java",
         "storage.type.numeric.go",
         "storage.type.string.go",

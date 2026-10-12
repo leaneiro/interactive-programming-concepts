@@ -1,0 +1,16 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+void printResult(const vector<int>& values) {
+    cout << "[";
+    for (size_t position = 0; position < values.size(); position++) {
+        if (position > 0) {
+            cout << ",";
+        }
+        cout << values[position];
+    }
+    cout << "]" << endl;
+}

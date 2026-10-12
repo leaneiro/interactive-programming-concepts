@@ -6,14 +6,14 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 
 ## What is inside
 
-| Algorithm      | Structure          | Languages                    |
-| -------------- | ------------------ | ---------------------------- |
-| Bubble Sort    | Array              | TypeScript, Python, Java, Go |
-| Selection Sort | Array              | TypeScript                   |
-| BST Search     | Binary search tree | TypeScript                   |
-| BST Insert     | Binary search tree | TypeScript                   |
-| BST Delete     | Binary search tree | TypeScript                   |
-| BFS            | Graph              | TypeScript                   |
+| Algorithm      | Structure          | Languages                         |
+| -------------- | ------------------ | --------------------------------- |
+| Bubble Sort    | Array              | TypeScript, Python, Java, C++, Go |
+| Selection Sort | Array              | TypeScript                        |
+| BST Search     | Binary search tree | TypeScript                        |
+| BST Insert     | Binary search tree | TypeScript                        |
+| BST Delete     | Binary search tree | TypeScript                        |
+| BFS            | Graph              | TypeScript                        |
 
 The studio has a timeline you can scrub, a history you can click, a memory and variables panel, and light and dark themes.
 
@@ -279,6 +279,7 @@ TypeScript and Python need nothing beyond `npm install`: TypeScript is compiled 
 | TypeScript | `typescript` from npm |
 | Python     | Pyodide from npm      |
 | Java       | `java` on your `PATH` |
+| C++        | `g++` on your `PATH`  |
 | Go         | `go` on your `PATH`   |
 
 An adapter says how to find the function in a snippet, how to write each kind of argument in that language, and how to run the resulting program. Arrays are enough for sorting; trees and graphs also need a prelude that defines the node type and builds the structure. When a check fails, the report names the call that went wrong and, for compile errors, prints the program that was run.
