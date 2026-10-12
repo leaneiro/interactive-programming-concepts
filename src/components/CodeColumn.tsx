@@ -1,4 +1,4 @@
-import { Suspense, use, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   describeLines,
   type LineRange,
@@ -6,11 +6,8 @@ import {
   type Step,
 } from "@/algorithms/algorithm";
 import { languages } from "@/algorithms/languages";
-import {
-  highlightAsPlainText,
-  highlightReady,
-  type CodeLine,
-} from "@/lib/highlighter";
+import { useHighlight } from "@/hooks/useHighlight";
+import type { CodeLine } from "@/lib/highlighter";
 import { RichTextView } from "./RichTextView";
 
 interface CodeColumnProps {
@@ -22,7 +19,11 @@ interface CodeColumnProps {
 export function CodeColumn({ algorithmId, snippet, step }: CodeColumnProps) {
   const activeLines = snippet.regions[step.region];
   const fileName = `${algorithmId}.${languages[snippet.languageId].fileExtension}`;
-  const plainCodeLines = highlightAsPlainText(snippet.code, snippet.languageId);
+  const highlight = useHighlight(snippet.languageId);
+  const codeLines = useMemo(
+    () => highlight(snippet.code),
+    [highlight, snippet.code],
+  );
 
   return (
     <section aria-label="Source code" className="flex min-h-0 min-w-0 flex-col">
@@ -31,13 +32,7 @@ export function CodeColumn({ algorithmId, snippet, step }: CodeColumnProps) {
         <span className="ml-auto">{describeLines(activeLines)}</span>
       </header>
 
-      <Suspense
-        fallback={
-          <CodeListing codeLines={plainCodeLines} activeLines={activeLines} />
-        }
-      >
-        <HighlightedCode snippet={snippet} activeLines={activeLines} />
-      </Suspense>
+      <CodeListing codeLines={codeLines} activeLines={activeLines} />
 
       <footer className="mt-auto flex min-h-38 flex-col gap-2 border-t border-border px-5 py-4">
         <h2 className="section-label">What is happening</h2>
@@ -50,21 +45,6 @@ export function CodeColumn({ algorithmId, snippet, step }: CodeColumnProps) {
       </footer>
     </section>
   );
-}
-
-interface HighlightedCodeProps {
-  snippet: Snippet;
-  activeLines: LineRange;
-}
-
-function HighlightedCode({ snippet, activeLines }: HighlightedCodeProps) {
-  const highlight = use(highlightReady);
-  const codeLines = useMemo(
-    () => highlight(snippet.code, snippet.languageId),
-    [highlight, snippet],
-  );
-
-  return <CodeListing codeLines={codeLines} activeLines={activeLines} />;
 }
 
 interface CodeListingProps {

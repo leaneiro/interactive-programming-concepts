@@ -7,11 +7,36 @@ export interface CodeToken {
 
 export type CodeLine = readonly CodeToken[];
 
-export type Highlight = (code: string, languageId: LanguageId) => CodeLine[];
+export type Highlight = (code: string) => CodeLine[];
 
-export const highlightAsPlainText: Highlight = (code) =>
+const highlightAsPlainText: Highlight = (code) =>
   code.split("\n").map((lineContent) => [{ content: lineContent }]);
 
-export const highlightReady: Promise<Highlight> = import("./shikiHighlighter")
-  .then(({ createShikiHighlight }) => createShikiHighlight())
-  .catch(() => highlightAsPlainText);
+const loadedHighlights = new Map<LanguageId, Highlight>();
+const requestedLanguageIds = new Set<LanguageId>();
+const highlightListeners = new Set<() => void>();
+
+export function readHighlight(languageId: LanguageId): Highlight {
+  return loadedHighlights.get(languageId) ?? highlightAsPlainText;
+}
+
+export function subscribeToHighlights(onChange: () => void): () => void {
+  highlightListeners.add(onChange);
+
+  return () => {
+    highlightListeners.delete(onChange);
+  };
+}
+
+export function requestHighlight(languageId: LanguageId): void {
+  if (requestedLanguageIds.has(languageId)) return;
+  requestedLanguageIds.add(languageId);
+
+  void import("./shikiHighlighter")
+    .then(({ createShikiHighlight }) => createShikiHighlight(languageId))
+    .catch(() => highlightAsPlainText)
+    .then((highlight) => {
+      loadedHighlights.set(languageId, highlight);
+      for (const notifyListener of highlightListeners) notifyListener();
+    });
+}

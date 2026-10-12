@@ -60,14 +60,19 @@ const theme = {
   ],
 };
 
-export async function createShikiHighlight(): Promise<Highlight> {
-  const highlighter = await createHighlighterCore({
-    themes: [theme],
-    langs: Object.values(grammars).map((loadGrammar) => loadGrammar()),
-    engine: createJavaScriptRegexEngine(),
-  });
+const highlighterReady = createHighlighterCore({
+  themes: [theme],
+  langs: [],
+  engine: createJavaScriptRegexEngine(),
+});
 
-  return (code, languageId) => {
+export async function createShikiHighlight(
+  languageId: LanguageId,
+): Promise<Highlight> {
+  const highlighter = await highlighterReady;
+  await highlighter.loadLanguage(grammars[languageId]());
+
+  return (code) => {
     const { tokens } = highlighter.codeToTokens(code, {
       lang: languageId,
       theme: themeName,
