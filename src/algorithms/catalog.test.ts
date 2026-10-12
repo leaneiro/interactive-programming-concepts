@@ -41,15 +41,35 @@ describe("algorithm catalog", () => {
       }
     });
 
-    it("produces traces whose steps all point at a known region", () => {
+    it("produces traces whose steps only use regions and variables every snippet knows", () => {
       for (let attempt = 0; attempt < 25; attempt++) {
         const steps = algorithm.createTrace();
 
         expect(steps.length).toBeGreaterThan(1);
         for (const step of steps) {
+          const referencedRegions = [
+            step.region,
+            ...[...step.caption, ...step.explanation].flatMap((part) =>
+              typeof part !== "string" && part.kind === "lines"
+                ? [part.region]
+                : [],
+            ),
+          ];
+
           for (const snippet of algorithm.snippets) {
-            expect(snippet.regions).toHaveProperty(step.region);
+            for (const region of referencedRegions) {
+              expect(snippet.regions).toHaveProperty(region);
+            }
+            for (const variableId of Object.keys(snippet.variableNames)) {
+              expect(step.variables).toHaveProperty(variableId);
+            }
           }
+          for (const variableId of step.activeVariables) {
+            expect(step.variables).toHaveProperty(variableId);
+          }
+          expect(step.historyEntry).not.toBe("");
+          expect(step.caption.length).toBeGreaterThan(0);
+          expect(step.explanation.length).toBeGreaterThan(0);
         }
       }
     });

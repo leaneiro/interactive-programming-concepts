@@ -1,5 +1,7 @@
 export interface ArrayState {
   kind: "array";
+  name: string;
   values: readonly number[];
-  highlightedIndices: readonly number[];
+  comparedIndices: readonly number[];
+  sortedIndices: readonly number[];
 }

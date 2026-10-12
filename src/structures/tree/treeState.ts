@@ -5,5 +5,4 @@ export interface TreeState {
   root: TreeNode | null;
   focusedNodeId: string | null;
   markedNodeId: string | null;
-  caption: string;
 }

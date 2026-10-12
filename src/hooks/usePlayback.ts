@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export const fastestStepDelayMs = 200;
-export const slowestStepDelayMs = 1500;
+export const fastestStepDelayMs = 100;
+export const slowestStepDelayMs = 2000;
 const initialStepDelayMs = 700;
 
 export type Playback = ReturnType<typeof usePlayback>;
@@ -29,17 +29,13 @@ export function usePlayback(stepCount: number) {
     };
   }, [isPlaying, stepIndex, lastStepIndex, stepDelayMs]);
 
+  function goToStep(targetStepIndex: number): void {
+    setStepIndex(Math.min(lastStepIndex, Math.max(0, targetStepIndex)));
+  }
+
   function togglePlayback(): void {
     if (!isPlaying && isAtLastStep) setStepIndex(0);
     setIsPlaying(!isPlaying);
-  }
-
-  function stepForward(): void {
-    setStepIndex(Math.min(stepIndex + 1, lastStepIndex));
-  }
-
-  function stepBackward(): void {
-    setStepIndex(Math.max(stepIndex - 1, 0));
   }
 
   function restart(): void {
@@ -49,14 +45,26 @@ export function usePlayback(stepCount: number) {
 
   return {
     stepIndex,
+    stepCount,
     isPlaying,
     isAtFirstStep,
     isAtLastStep,
     stepDelayMs,
     setStepDelayMs,
     togglePlayback,
-    stepForward,
-    stepBackward,
     restart,
+    goToStep,
+    stepForward: () => {
+      goToStep(stepIndex + 1);
+    },
+    stepBackward: () => {
+      goToStep(stepIndex - 1);
+    },
+    goToFirstStep: () => {
+      goToStep(0);
+    },
+    goToLastStep: () => {
+      goToStep(lastStepIndex);
+    },
   };
 }

@@ -16,6 +16,9 @@ function createInput(): BstInsertInput {
 export const bstInsert = defineAlgorithm({
   id: "bst-insert",
   name: "BST Insert",
+  category: "structures",
+  complexity: "O(h)",
+  traits: ["binary search tree"],
   createInput,
   trace: traceBstInsert,
   snippets: [
@@ -30,6 +33,10 @@ export const bstInsert = defineAlgorithm({
         compareRight: line(8),
         recurseRight: line(9),
         returnNode: line(12),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
       },
     },
   ],

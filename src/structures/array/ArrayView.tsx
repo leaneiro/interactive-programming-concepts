@@ -1,4 +1,13 @@
+import { Legend, type LegendItem } from "@/components/Legend";
 import type { ArrayState } from "./arrayState";
+
+const tallestBarHeightPercent = 83;
+
+const legendItems: readonly LegendItem[] = [
+  { label: "comparing", swatchClassName: "bg-accent" },
+  { label: "pending", swatchClassName: "bg-pending" },
+  { label: "sorted", swatchClassName: "bg-sorted" },
+];
 
 interface ArrayViewProps {
   state: ArrayState;
@@ -7,32 +16,32 @@ interface ArrayViewProps {
 export function ArrayView({ state }: ArrayViewProps) {
   const largestValue = Math.max(1, ...state.values);
 
-  return (
-    <ol
-      aria-label="Array values"
-      className="flex h-72 gap-[3%] panel px-[3%] py-3 font-mono text-xs"
-    >
-      {state.values.map((value, valueIndex) => {
-        const isHighlighted = state.highlightedIndices.includes(valueIndex);
+  function statusOf(valueIndex: number): string {
+    if (state.comparedIndices.includes(valueIndex)) return "comparing";
+    if (state.sortedIndices.includes(valueIndex)) return "sorted";
+    return "pending";
+  }
 
-        return (
-          <li
-            key={valueIndex}
-            className="flex min-w-0 flex-1 flex-col gap-1.5 text-center"
-          >
-            <div className="relative mt-5 flex-1">
-              <div
-                data-highlighted={isHighlighted}
-                style={{ height: `${(value / largestValue) * 100}%` }}
-                className="absolute inset-x-0 bottom-0 rounded-t bg-idle shadow-md transition-colors data-[highlighted=true]:bg-accent"
-              >
-                <span className="absolute inset-x-0 -top-5">{value}</span>
-              </div>
+  return (
+    <div className="relative size-full px-4 pt-8.5 sm:px-9">
+      <Legend items={legendItems} />
+      <ol aria-label="Array values" className="flex size-full gap-2 sm:gap-4">
+        {state.values.map((value, valueIndex) => (
+          <li key={valueIndex} className="relative mt-6 min-w-0 flex-1">
+            <div
+              data-status={statusOf(valueIndex)}
+              style={{
+                height: `max(4px, ${(value / largestValue) * tallestBarHeightPercent}%)`,
+              }}
+              className="group absolute inset-x-0 bottom-0 rounded-t-sm bg-pending transition-[height,background-color] duration-200 ease-out data-[status=comparing]:bg-accent data-[status=sorted]:bg-sorted"
+            >
+              <span className="absolute inset-x-0 -top-6 text-center font-mono text-meta text-secondary group-data-[status=comparing]:font-medium group-data-[status=comparing]:text-accent-text">
+                {value}
+              </span>
             </div>
-            <span className="text-muted">{valueIndex}</span>
           </li>
-        );
-      })}
-    </ol>
+        ))}
+      </ol>
+    </div>
   );
 }

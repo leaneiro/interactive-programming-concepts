@@ -1,3 +1,4 @@
+import { Legend, type LegendItem } from "@/components/Legend";
 import {
   Diagram,
   DiagramEdge,
@@ -7,6 +8,12 @@ import {
 import { findPathTo } from "./binarySearchTree";
 import { layoutTree } from "./treeLayout";
 import type { TreeState } from "./treeState";
+
+const legendItems: readonly LegendItem[] = [
+  { label: "current", swatchClassName: "bg-accent" },
+  { label: "pending", swatchClassName: "bg-pending" },
+  { label: "removing", swatchClassName: "bg-danger" },
+];
 
 interface TreeViewProps {
   state: TreeState;
@@ -21,12 +28,13 @@ export function TreeView({ state }: TreeViewProps) {
 
   function toneOf(nodeId: string): NodeTone {
     if (nodeId === state.markedNodeId) return "danger";
-    if (nodeId === state.focusedNodeId) return "accent";
-    return "idle";
+    if (nodeId === state.focusedNodeId) return "current";
+    return "pending";
   }
 
   return (
-    <figure className="panel p-2">
+    <div className="relative size-full px-4 pt-10 pb-2">
+      <Legend items={legendItems} />
       <Diagram label="Binary search tree" points={nodes}>
         {edges.map(({ parent, child }) => (
           <DiagramEdge
@@ -45,9 +53,6 @@ export function TreeView({ state }: TreeViewProps) {
           />
         ))}
       </Diagram>
-      <figcaption className="px-2 pb-1 font-mono text-sm">
-        {state.caption}
-      </figcaption>
-    </figure>
+    </div>
   );
 }

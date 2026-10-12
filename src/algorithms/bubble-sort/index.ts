@@ -7,6 +7,9 @@ import typescriptCode from "./typescript.txt?raw";
 export const bubbleSort = defineAlgorithm({
   id: "bubble-sort",
   name: "Bubble Sort",
+  category: "sorting",
+  complexity: "O(n²)",
+  traits: ["stable", "in-place"],
   createInput: createRandomArray,
   trace: traceBubbleSort,
   snippets: [
@@ -21,6 +24,12 @@ export const bubbleSort = defineAlgorithm({
         swap: lines(5, 7),
         returnResult: line(11),
       },
+      variableNames: {
+        temporary: "t",
+        length: "a.length",
+        outerIndex: "i",
+        innerIndex: "j",
+      },
     },
     {
       languageId: "python",
@@ -32,6 +41,12 @@ export const bubbleSort = defineAlgorithm({
         compare: line(6),
         swap: lines(7, 9),
         returnResult: line(10),
+      },
+      variableNames: {
+        temporary: "tmp",
+        length: "n",
+        outerIndex: "i",
+        innerIndex: "j",
       },
     },
   ],

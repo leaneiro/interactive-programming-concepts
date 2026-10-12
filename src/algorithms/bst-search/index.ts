@@ -23,6 +23,9 @@ function createInput(): BstSearchInput {
 export const bstSearch = defineAlgorithm({
   id: "bst-search",
   name: "BST Search",
+  category: "structures",
+  complexity: "O(h)",
+  traits: ["binary search tree"],
   createInput,
   trace: traceBstSearch,
   snippets: [
@@ -36,6 +39,10 @@ export const bstSearch = defineAlgorithm({
         goLeft: lines(7, 8),
         goRight: lines(9, 10),
         notFound: line(13),
+      },
+      variableNames: {
+        target: "key",
+        currentNode: "curr",
       },
     },
   ],

@@ -11,7 +11,10 @@ function createInput(): BreadthFirstSearchInput {
 
 export const breadthFirstSearch = defineAlgorithm({
   id: "graph-bfs",
-  name: "Graph BFS",
+  name: "BFS",
+  category: "graphs",
+  complexity: "O(V + E)",
+  traits: ["breadth-first search"],
   createInput,
   trace: traceBreadthFirstSearch,
   snippets: [
@@ -30,6 +33,12 @@ export const breadthFirstSearch = defineAlgorithm({
         markVisited: line(15),
         enqueue: line(16),
         returnResult: line(20),
+      },
+      variableNames: {
+        startNode: "start",
+        currentNode: "current",
+        neighbor: "neighbor",
+        result: "result",
       },
     },
   ],

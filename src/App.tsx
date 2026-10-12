@@ -1,24 +1,22 @@
 import { useState } from "react";
 import { algorithms } from "@/algorithms";
 import type { Algorithm } from "@/algorithms/algorithm";
-import { languageNames, type LanguageId } from "@/algorithms/languages";
-import { CodePanel } from "@/components/CodePanel";
-import { PlaybackControls } from "@/components/PlaybackControls";
-import { SelectField } from "@/components/SelectField";
-import { StepNote } from "@/components/StepNote";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import type { LanguageId } from "@/algorithms/languages";
+import { CodeColumn } from "@/components/CodeColumn";
+import { HistorySection } from "@/components/HistorySection";
+import { MemorySection } from "@/components/MemorySection";
+import { Sidebar } from "@/components/Sidebar";
+import { StudioHeader } from "@/components/StudioHeader";
+import { Timeline } from "@/components/Timeline";
+import { Transport } from "@/components/Transport";
+import { VariablesSection } from "@/components/VariablesSection";
 import { usePlayback } from "@/hooks/usePlayback";
-import { useResizableWidth } from "@/hooks/useResizableWidth";
+import { usePlaybackShortcuts } from "@/hooks/usePlaybackShortcuts";
 import { useTheme } from "@/hooks/useTheme";
 import { StructureView } from "@/structures/StructureView";
 
 const defaultAlgorithm = algorithms[0];
 const defaultLanguageId: LanguageId = "typescript";
-
-const algorithmOptions = algorithms.map((algorithm) => ({
-  value: algorithm.id,
-  label: algorithm.name,
-}));
 
 export function App() {
   const { theme, toggleTheme } = useTheme();
@@ -26,84 +24,86 @@ export function App() {
   const [preferredLanguageId, setPreferredLanguageId] =
     useState(defaultLanguageId);
   const [steps, setSteps] = useState(defaultAlgorithm.createTrace);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const playback = usePlayback(steps.length);
-  const codePanel = useResizableWidth({
-    storageKey: "ipc:sidebarWidth",
-    initialWidth: 420,
-    minimumWidth: 320,
-    maximumWidth: 720,
-  });
+  usePlaybackShortcuts(playback);
 
   const step = steps[playback.stepIndex];
   const snippet =
     algorithm.snippets.find(
       (candidate) => candidate.languageId === preferredLanguageId,
     ) ?? algorithm.snippets[0];
-  const languageOptions = algorithm.snippets.map(({ languageId }) => ({
-    value: languageId,
-    label: languageNames[languageId],
-  }));
 
   function startNewTrace(nextAlgorithm: Algorithm): void {
     setAlgorithm(nextAlgorithm);
     setSteps(nextAlgorithm.createTrace());
+    setIsNavigationOpen(false);
     playback.restart();
   }
 
-  function selectAlgorithm(algorithmId: string): void {
-    const selectedAlgorithm = algorithms.find(
-      (candidate) => candidate.id === algorithmId,
-    );
-    if (selectedAlgorithm) startNewTrace(selectedAlgorithm);
-  }
-
   return (
-    <div className="min-h-dvh">
-      <header className="flex flex-wrap items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
-        <SelectField
-          label="Algorithm"
-          value={algorithm.id}
-          options={algorithmOptions}
-          onChange={selectAlgorithm}
-        />
-        <SelectField
-          label="Language"
-          value={snippet.languageId}
-          options={languageOptions}
-          onChange={setPreferredLanguageId}
-        />
-        <ThemeToggle theme={theme} onToggle={toggleTheme} />
-      </header>
+    <div className="grid min-h-dvh grid-cols-[minmax(0,1fr)] bg-surface font-sans leading-[normal] text-foreground split:h-dvh studio:grid-cols-[14.5rem_minmax(0,1fr)]">
+      <Sidebar
+        algorithms={algorithms}
+        selectedAlgorithmId={algorithm.id}
+        isOpen={isNavigationOpen}
+        onOpen={() => {
+          setIsNavigationOpen(true);
+        }}
+        onClose={() => {
+          setIsNavigationOpen(false);
+        }}
+        onSelect={startNewTrace}
+      />
 
-      <main
-        style={{ "--code-panel-width": `${codePanel.width}px` }}
-        className="grid gap-4 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_auto_var(--code-panel-width)] lg:gap-0"
-      >
-        <div className="flex min-w-0 flex-col gap-2">
-          <PlaybackControls
-            playback={playback}
-            onRandomize={() => {
-              startNewTrace(algorithm);
-            }}
+      <div className="grid min-h-0 min-w-0 grid-rows-[3.75rem_minmax(0,1fr)]">
+        <StudioHeader
+          algorithm={algorithm}
+          languageId={snippet.languageId}
+          theme={theme}
+          onSelectLanguage={setPreferredLanguageId}
+          onToggleTheme={toggleTheme}
+          onOpenNavigation={() => {
+            setIsNavigationOpen(true);
+          }}
+        />
+
+        <div className="grid min-h-0 split:grid-cols-[minmax(0,1fr)_30rem]">
+          <main className="@container grid min-h-0 grid-rows-[3.25rem_22rem_auto_auto] border-border split:grid-rows-[3.25rem_minmax(0,3fr)_minmax(0,2fr)_auto] split:border-r">
+            <Timeline
+              step={step}
+              stepIndex={playback.stepIndex}
+              stepCount={steps.length}
+              regions={snippet.regions}
+              onSeek={playback.goToStep}
+            />
+            <StructureView state={step.state} />
+            <div className="min-h-0 overflow-y-auto border-t border-border bg-sunken @[34.5rem]:grid @[34.5rem]:grid-cols-[minmax(23.5rem,1fr)_minmax(11rem,18.75rem)] @[34.5rem]:overflow-visible">
+              <div className="border-border @[34.5rem]:min-h-0 @[34.5rem]:overflow-y-auto @[34.5rem]:border-r">
+                <MemorySection state={step.state} />
+                <VariablesSection step={step} snippet={snippet} />
+              </div>
+              <HistorySection
+                steps={steps}
+                stepIndex={playback.stepIndex}
+                onSelectStep={playback.goToStep}
+              />
+            </div>
+            <Transport
+              playback={playback}
+              onShuffle={() => {
+                startNewTrace(algorithm);
+              }}
+            />
+          </main>
+
+          <CodeColumn
+            algorithmId={algorithm.id}
+            snippet={snippet}
+            step={step}
           />
-          <StepNote
-            stepNumber={playback.stepIndex + 1}
-            stepCount={steps.length}
-            note={step.note}
-          />
-          <StructureView state={step.state} />
         </div>
-        <div
-          {...codePanel.separatorProps}
-          aria-label="Resize code panel"
-          className="mx-1 hidden w-2 cursor-col-resize touch-none rounded outline-none hover:bg-accent/20 focus-visible:bg-accent/30 lg:block"
-        />
-        <CodePanel
-          title={algorithm.name}
-          snippet={snippet}
-          activeLines={snippet.regions[step.region]}
-        />
-      </main>
+      </div>
     </div>
   );
 }

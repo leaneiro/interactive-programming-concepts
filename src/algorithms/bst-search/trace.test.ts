@@ -13,15 +13,18 @@ describe("traceBstSearch", () => {
   });
 
   it("walks down one branch, comparing at every node", () => {
-    const visitedNotes = traceBstSearch({ root, target: 40 })
+    const visits = traceBstSearch({ root, target: 40 })
       .filter((step) => step.region === "loop")
-      .map((step) => step.note);
+      .map((step) => step.historyEntry);
 
-    expect(visitedNotes).toEqual([
-      "Visit node 50",
-      "Visit node 30",
-      "Visit node 40",
-    ]);
+    expect(visits).toEqual(["visit(50)", "visit(30)", "visit(40)"]);
+  });
+
+  it("tracks the node under inspection and counts the comparisons", () => {
+    const lastStep = traceBstSearch({ root, target: 40 }).at(-1);
+
+    expect(lastStep?.variables).toEqual({ target: 40, currentNode: 40 });
+    expect(lastStep?.counters).toEqual([{ label: "cmp", value: 3 }]);
   });
 
   it("reports a missing target after reaching a dead end", () => {

@@ -6,5 +6,6 @@ export interface GraphState {
   currentNode: string | null;
   visitedNodes: readonly string[];
   queuedNodes: readonly string[];
+  visitOrder: readonly string[];
   exploredEdges: readonly GraphEdge[];
 }

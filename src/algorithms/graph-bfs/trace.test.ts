@@ -17,7 +17,7 @@ describe("traceBreadthFirstSearch", () => {
   const steps = traceBreadthFirstSearch({ graph, startNode: "A" });
 
   it("visits nodes level by level", () => {
-    expect(steps.at(-1)?.note).toBe("Return the visit order: A, B, C, D, E");
+    expect(steps.at(-1)?.state.visitOrder).toEqual(["A", "B", "C", "D", "E"]);
   });
 
   it("finishes with every node visited and nothing queued", () => {
@@ -29,12 +29,12 @@ describe("traceBreadthFirstSearch", () => {
   });
 
   it("never queues the same node twice", () => {
-    const enqueueNotes = steps
+    const enqueuedNodes = steps
       .filter((step) => step.region === "enqueue")
-      .map((step) => step.note);
+      .map((step) => step.historyEntry);
 
-    expect(new Set(enqueueNotes).size).toBe(enqueueNotes.length);
-    expect(enqueueNotes).toHaveLength(graph.nodes.length - 1);
+    expect(new Set(enqueuedNodes).size).toBe(enqueuedNodes.length);
+    expect(enqueuedNodes).toHaveLength(graph.nodes.length - 1);
   });
 
   it("only reaches nodes connected to the start", () => {

@@ -3,13 +3,13 @@ import { fitViewBox, type Point } from "./geometry";
 
 const nodeRadius = 22;
 
-export type NodeTone = "idle" | "accent" | "success" | "warning" | "danger";
+export type NodeTone = "pending" | "current" | "done" | "waiting" | "danger";
 
-const toneClasses: Record<NodeTone, string> = {
-  idle: "fill-idle",
-  accent: "fill-accent",
-  success: "fill-success",
-  warning: "fill-warning",
+const toneClassNames: Record<NodeTone, string> = {
+  pending: "fill-pending",
+  current: "fill-accent",
+  done: "fill-sorted",
+  waiting: "fill-waiting",
   danger: "fill-danger",
 };
 
@@ -25,8 +25,7 @@ export function Diagram({ label, points, children }: DiagramProps) {
       role="img"
       aria-label={label}
       viewBox={fitViewBox(points)}
-      preserveAspectRatio="xMidYMin meet"
-      className="h-96 w-full"
+      className="size-full"
     >
       {children}
     </svg>
@@ -47,11 +46,8 @@ export function DiagramEdge({ from, to, isHighlighted }: DiagramEdgeProps) {
       x2={to.x}
       y2={to.y}
       strokeLinecap="round"
-      className={
-        isHighlighted
-          ? "stroke-accent stroke-4 transition-colors"
-          : "stroke-edge stroke-2 transition-colors"
-      }
+      data-highlighted={isHighlighted}
+      className="stroke-border-strong stroke-2 transition-colors duration-200 data-[highlighted=true]:stroke-accent data-[highlighted=true]:stroke-3"
     />
   );
 }
@@ -67,12 +63,12 @@ export function DiagramNode({ position, label, tone }: DiagramNodeProps) {
     <g transform={`translate(${position.x} ${position.y})`}>
       <circle
         r={nodeRadius}
-        className={`${toneClasses[tone]} stroke-panel stroke-3 drop-shadow-md transition-colors`}
+        className={`${toneClassNames[tone]} stroke-surface stroke-3 transition-colors duration-200`}
       />
       <text
         textAnchor="middle"
         dominantBaseline="central"
-        className="fill-on-node font-mono text-sm font-semibold select-none"
+        className="fill-surface font-mono text-body font-medium select-none"
       >
         {label}
       </text>

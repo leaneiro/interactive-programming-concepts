@@ -13,6 +13,9 @@ function createInput(): BstDeleteInput {
 export const bstDelete = defineAlgorithm({
   id: "bst-delete",
   name: "BST Delete",
+  category: "structures",
+  complexity: "O(h)",
+  traits: ["binary search tree"],
   createInput,
   trace: traceBstDelete,
   snippets: [
@@ -34,6 +37,11 @@ export const bstDelete = defineAlgorithm({
         copySuccessor: line(28),
         removeSuccessor: line(29),
         returnNode: line(31),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
+        successor: "successor",
       },
     },
   ],
