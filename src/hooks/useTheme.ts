@@ -1,24 +1,30 @@
-import { useCallback, useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { readStoredValue, storeValue } from "@/lib/storage";
 
-export type ThemeMode = "dark" | "light";
-const STORAGE_KEY = "ipc:theme";
+export type Theme = "light" | "dark";
 
-export function useTheme(): [ThemeMode, (next?: ThemeMode) => void] {
-  const [theme, setTheme] = useState<ThemeMode>(() => {
-    const saved = (localStorage.getItem(STORAGE_KEY) as ThemeMode | null);
-    return saved ?? "dark";
-  });
+const storageKey = "ipc:theme";
 
-  // Apply to <html data-theme="...">
-  useEffect(() => {
-    const html = document.documentElement;
-    html.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+function readInitialTheme(): Theme {
+  const storedTheme = readStoredValue(storageKey);
+  if (storedTheme === "light" || storedTheme === "dark") return storedTheme;
+
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return prefersDark ? "dark" : "light";
+}
+
+export function useTheme() {
+  const [theme, setTheme] = useState(readInitialTheme);
+
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = theme;
   }, [theme]);
 
-  const toggle = useCallback((next?: ThemeMode) => {
-    setTheme(prev => next ?? (prev === "dark" ? "light" : "dark"));
-  }, []);
+  function toggleTheme(): void {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    storeValue(storageKey, nextTheme);
+  }
 
-  return [theme, toggle];
+  return { theme, toggleTheme };
 }

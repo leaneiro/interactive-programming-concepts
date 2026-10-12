@@ -1,111 +1,195 @@
-# 🧠 Engine Architecture (plug-in based)
+# Interactive Programming Concepts
 
-This project uses a modular, plug-in oriented engine so that **algorithms**, **languages**, and **visual renderers** can be composed without `if/else` chains.
+Step through classic algorithms and watch the code and the data structure move together.
 
----
+Pick an algorithm and press play. Every step highlights the lines being executed, explains what is happening in plain words, and redraws the array, tree or graph.
 
-## Core contracts
+## What is inside
 
-- **`IAlgorithmTracer<TInitial>`**  
-  Given an initial structure, produces a `StepSequence` (each `Step` includes code line range, note, and optional visual operations).  
-  Exposes:
-  - `snippetId` – stable id for the code viewer (e.g., `bubble-sort:typescript`)
-  - `structureKind` – renderer key (e.g., `array`, `tree`, `graph`)
+| Algorithm      | Structure          | Languages          |
+| -------------- | ------------------ | ------------------ |
+| Bubble Sort    | Array              | TypeScript, Python |
+| Selection Sort | Array              | TypeScript         |
+| BST Search     | Binary search tree | TypeScript         |
+| BST Insert     | Binary search tree | TypeScript         |
+| BST Delete     | Binary search tree | TypeScript         |
+| Graph BFS      | Graph              | TypeScript         |
 
-- **`ILanguageAdapter`**  
-  Maps semantic labels (e.g., `"outer-loop"`) to concrete code line ranges.  
-  Decouples tracers from hard-coded numbers.
+Playback has play and pause, step forward and back, restart, a new random input, and a speed slider. The interface has light and dark themes and a resizable code panel.
 
-- **`IVisualRenderer<TState>`**  
-  Interprets domain **operations** and reduces them into a visual state `TState` that the canvas can render.
+## Getting started
 
----
+Requires Node.js 22.12 or newer.
 
-## Registries and Orchestrator
+```sh
+npm install
+npm run dev
+```
 
-- **`TracerRegistry`** — stores tracers by `"<algorithm-id>:<language-id>"`.
-- **`LanguageRegistry`** — stores runtime language adapters (`ILanguageAdapter`).
-- **`RendererRegistry`** — stores visual renderers by structure kind.
-- **`Runner`** — orchestrates the flow:
-  1. `buildTrace()` → calls the tracer to produce steps and returns metadata (`structureKind`, `snippetId`, `languageDisplay`).
-  2. `computeVisualState()` → aggregates all visual operations up to a given index and delegates interpretation to the correct renderer.
+| Script                 | What it does                               |
+| ---------------------- | ------------------------------------------ |
+| `npm run dev`          | Start the development server               |
+| `npm run build`        | Type-check and build for production        |
+| `npm run preview`      | Serve the production build locally         |
+| `npm test`             | Run the test suite once                    |
+| `npm run test:watch`   | Run the tests on every change              |
+| `npm run lint`         | Lint with type-aware rules                 |
+| `npm run format`       | Format every file with Prettier            |
+| `npm run format:check` | Check formatting without changing anything |
 
----
+## How it works
 
-## Array renderer (visual)
+The whole design is three small ideas.
 
-- **`ArrayVisualState`** (`src/types/visual/ArrayVisualState.ts`) – describes the visual state for 1-D arrays (`values` + optional `focus` pair).
-- **`ArrayRenderer`** (`src/renderers/ArrayRenderer.ts`) – interprets `"array/compare"` and `"array/swap"` operations and reduces them into an `ArrayVisualState`.
+**An algorithm is a pure function that returns a trace.** `trace(input)` runs the real algorithm and records a `Step` at every interesting moment. A step is plain data:
 
----
+```ts
+interface Step {
+  region: string;
+  note: string;
+  state: VisualState;
+}
+```
 
-## Example tracer (Bubble Sort)
+`region` names the part of the code that is running, `note` explains it, and `state` is a complete snapshot of what to draw.
 
-- **`BubbleSortArrayTracer`** (`src/tracers/BubbleSortArrayTracer.ts`)  
-  Implements `IAlgorithmTracer<number[]>` for Bubble Sort.  
-  Generates a deterministic `StepSequence` for a given array, with code ranges, notes, and visual operations.  
-  Registered under `"bubble-sort:typescript"` in the `TracerRegistry`.
+**A snippet maps regions to lines.** Each algorithm ships its source code in one or more languages, and each snippet says which lines a region covers. Tracers never mention line numbers, so the same trace drives every language, and switching language keeps your place.
 
----
+**A view draws a state.** `VisualState` is a union of `ArrayState`, `TreeState` and `GraphState`, and each one has a React component that renders it.
 
-## Shared utilities
+Nothing mutable sits in between. Playing, stepping back and switching language all come down to showing `steps[stepIndex]`.
 
-- **`VisualStepBuilder`** (`src/tracing/VisualStepBuilder.ts`)  
-  Minimal builder used by tracers to append visual steps consistently.  
-  - `add(range, note, operations?)` – pushes a new step.  
-  - `build()` – returns the final sequence.
+## Project structure
 
----
+```
+src/
+  algorithms/
+    algorithm.ts      Algorithm, Step, Snippet and defineAlgorithm
+    languages.ts      languages a snippet can be written in
+    index.ts          the catalog shown in the interface
+    bubble-sort/
+      index.ts        name, snippets and the region-to-lines mapping
+      trace.ts        the instrumented algorithm
+      typescript.txt  the code shown in the panel
+  structures/         one folder per data structure: state, layout and view
+  components/         interface pieces
+  hooks/              playback, theme and the resizable panel
+  lib/                random helpers, storage and the syntax highlighter
+```
 
-## Language system
+## Adding an algorithm
 
-Languages are handled through two independent layers:
+Say you want linear search.
 
-| Layer | Location | Responsibility |
-|--------|-----------|----------------|
-| **UI/domain** | `src/types/language.ts` | Defines which languages exist and how they appear in the UI. |
-| **Engine** | `src/engine/registry.ts` | Registers runtime adapters that map semantic labels to code lines. |
+1. Create `src/algorithms/linear-search/` and save the code to display as `typescript.txt`.
 
-### LanguageCatalog (UI/domain layer)
+2. Write `trace.ts`. List the regions of the code you want to highlight, then run the algorithm and record a step whenever something worth showing happens.
 
-- Provides static metadata for supported languages.
-- Exports:
-  - `Language` – canonical lowercase ids.
-  - `LanguageId` – union of all ids.
-  - `LanguageLabels` – readable labels.
-  - `LanguageCatalog` – class exposing:
-    - `.default` – default language id (`"typescript"`)
-    - `.all` – ordered list of ids
-    - `.label(id)` – human-friendly label
-    - `.isValid(value)` – runtime validation.
+   ```ts
+   import type { Step } from "@/algorithms/algorithm";
+   import type { ArrayState } from "@/structures/array/arrayState";
 
-Used by **TopBar** and **App** to render language selectors and maintain language state.
+   export type LinearSearchRegion =
+     "signature" | "compare" | "found" | "notFound";
 
-### LanguageRegistry (engine layer)
+   export interface LinearSearchInput {
+     values: readonly number[];
+     target: number;
+   }
 
-- Stores runtime `ILanguageAdapter` instances, each responsible for mapping semantic labels (like `"compare"`, `"swapBlock"`) to real code line ranges.
-- Used internally by the **Runner** during trace generation.
+   type LinearSearchStep = Step<LinearSearchRegion, ArrayState>;
 
-**Design principle:**  
-UI and engine stay fully decoupled — the catalog defines *which languages exist*, while the registry defines *how each one maps code*.
+   export function traceLinearSearch({
+     values,
+     target,
+   }: LinearSearchInput): LinearSearchStep[] {
+     const steps: LinearSearchStep[] = [];
 
----
+     function record(
+       region: LinearSearchRegion,
+       note: string,
+       highlightedIndices: readonly number[] = [],
+     ): void {
+       steps.push({
+         region,
+         note,
+         state: { kind: "array", values, highlightedIndices },
+       });
+     }
 
-## App wiring (trace-driven)
+     record("signature", `Look for ${target}`);
 
-The UI consumes the engine outputs:
-- `runner.buildTrace(algorithmId, languageId, initialStructure)` → produces the `StepSequence` and metadata.  
-- `runner.computeVisualState(structureKind, initialVisual, steps, index)` → reduces operations into the visual state (`ArrayVisualState`).
+     for (const [valueIndex, value] of values.entries()) {
+       record("compare", `Is ${value} equal to ${target}?`, [valueIndex]);
 
-The app remains agnostic to concrete algorithms; switching algorithms or languages only requires new tracer and adapter registrations — not UI changes.
+       if (value === target) {
+         record("found", `Found it at index ${valueIndex}`, [valueIndex]);
+         return steps;
+       }
+     }
 
----
+     record("notFound", `${target} is not in the array`);
 
-### Randomize control
+     return steps;
+   }
+   ```
 
-The App exposes a **Randomize** action that:
-1) resets playback,  
-2) generates a new random input array, and  
-3) triggers `runner.buildTrace(...)` via effect to rebuild the step sequence.
+3. Write `index.ts`. It names the algorithm, says how to create a random input, and maps every region to lines of the snippet.
 
-This lets users explore different instances of the same algorithm without changing the UI wiring.
+   ```ts
+   import { defineAlgorithm, line } from "@/algorithms/algorithm";
+   import { pickRandom } from "@/lib/random";
+   import { createRandomArray } from "@/structures/array/randomArray";
+   import { traceLinearSearch, type LinearSearchInput } from "./trace";
+   import typescriptCode from "./typescript.txt?raw";
+
+   function createInput(): LinearSearchInput {
+     const values = createRandomArray();
+
+     return { values, target: pickRandom(values) };
+   }
+
+   export const linearSearch = defineAlgorithm({
+     id: "linear-search",
+     name: "Linear Search",
+     createInput,
+     trace: traceLinearSearch,
+     snippets: [
+       {
+         languageId: "typescript",
+         code: typescriptCode,
+         regions: {
+           signature: line(1),
+           compare: line(3),
+           found: line(4),
+           notFound: line(7),
+         },
+       },
+     ],
+   });
+   ```
+
+   The compiler checks the mapping: a region that the tracer uses but the snippet forgets, or a misspelled one, is a type error.
+
+4. Add `linearSearch` to the list in `src/algorithms/index.ts`. It shows up in the interface, and `catalog.test.ts` starts checking that its regions point at real lines.
+
+5. Add a `trace.test.ts` next to the tracer. Tracers are pure functions, so the tests are short. The existing ones are good models.
+
+To offer an existing algorithm in another language, add the code as a new `.txt` file and one more entry in `snippets`. For a language the project does not know yet, also add it to `languages.ts` and give it a grammar in `src/lib/shikiHighlighter.ts`.
+
+## Adding a data structure
+
+1. Create `src/structures/<name>/` with a state type that has its own `kind`, and a view component that renders it.
+2. Add the state to the `VisualState` union in `src/structures/visualState.ts`.
+3. Add a case to `StructureView.tsx`. The compiler points out the missing case if you forget.
+
+## Conventions
+
+- Names say what things are, in full words. The linter rejects one-letter identifiers other than `x` and `y`.
+- No comments. If a piece of code needs one, rename or extract until it does not.
+- Tracers are pure. They never change their input, and every step carries its own snapshot.
+- Run `npm run lint`, `npm run format` and `npm test` before opening a pull request. CI runs the same checks.
+
+## License
+
+[MIT](LICENSE)
