@@ -1,4 +1,4 @@
-export const languageIds = ["typescript", "python", "go"] as const;
+export const languageIds = ["typescript", "python", "java", "go"] as const;
 
 export type LanguageId = (typeof languageIds)[number];
 
@@ -10,5 +10,6 @@ interface Language {
 export const languages: Record<LanguageId, Language> = {
   typescript: { name: "TypeScript", fileExtension: "ts" },
   python: { name: "Python", fileExtension: "py" },
+  java: { name: "Java", fileExtension: "java" },
   go: { name: "Go", fileExtension: "go" },
 };

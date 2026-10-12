@@ -23,8 +23,8 @@ export function writeCalls(
   });
 }
 
-export function cannotRender(languageName: string, kind: string): never {
+export function cannotHandle(languageName: string, kind: string): never {
   throw new Error(
-    `The ${languageName} adapter cannot build a "${kind}" value yet. Teach it in verification/languages before adding this snippet.`,
+    `The ${languageName} adapter does not handle "${kind}" values yet. Teach it in verification/languages before adding this snippet.`,
   );
 }

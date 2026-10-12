@@ -1,6 +1,7 @@
 import { defineAlgorithm, line, lines } from "@/algorithms/algorithm";
 import { createRandomArray } from "@/structures/array/randomArray";
 import goCode from "./go.txt?raw";
+import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import { traceBubbleSort } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
@@ -46,6 +47,24 @@ export const bubbleSort = defineAlgorithm({
       variableNames: {
         temporary: "tmp",
         length: "n",
+        outerIndex: "i",
+        innerIndex: "j",
+      },
+    },
+    {
+      languageId: "java",
+      code: javaCode,
+      regions: {
+        signature: line(1),
+        outerLoop: line(2),
+        innerLoop: line(3),
+        compare: line(4),
+        swap: lines(5, 7),
+        returnResult: line(11),
+      },
+      variableNames: {
+        temporary: "t",
+        length: "a.length",
         outerIndex: "i",
         innerIndex: "j",
       },

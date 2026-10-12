@@ -6,6 +6,7 @@ import type { Highlight } from "./highlighter";
 const grammars = {
   typescript: () => import("shiki/langs/typescript.mjs"),
   python: () => import("shiki/langs/python.mjs"),
+  java: () => import("shiki/langs/java.mjs"),
   go: () => import("shiki/langs/go.mjs"),
 } satisfies Record<LanguageId, () => Promise<unknown>>;
 
@@ -39,6 +40,8 @@ const theme = {
       scope: [
         "support.type",
         "entity.name.type",
+        "storage.type.primitive",
+        "storage.type.java",
         "storage.type.numeric.go",
         "storage.type.string.go",
         "storage.type.boolean.go",

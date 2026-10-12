@@ -27,9 +27,8 @@ export async function findCommandVersion(
     const output = await runCommand(command, versionArguments);
 
     return versionPattern.exec(output)?.[1] ?? output.trim();
-  } catch (error) {
-    if (isMissingCommand(error)) return null;
-    throw error;
+  } catch {
+    return null;
   }
 }
 
@@ -43,8 +42,4 @@ export async function withTemporaryDirectory<Result>(
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
-}
-
-function isMissingCommand(error: unknown): boolean {
-  return error instanceof Error && "code" in error && error.code === "ENOENT";
 }

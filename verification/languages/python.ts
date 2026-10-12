@@ -1,7 +1,7 @@
 import { loadPyodide, type PyodideInterface } from "pyodide";
 import prelude from "../preludes/python.txt?raw";
 import type { Argument } from "../verification";
-import { cannotRender, writeCalls, type LanguageAdapter } from "./adapter";
+import { cannotHandle, writeCalls, type LanguageAdapter } from "./adapter";
 
 let interpreterLoading: Promise<PyodideInterface> | null = null;
 
@@ -21,7 +21,7 @@ function renderArgument(argument: Argument): string {
       return JSON.stringify(argument.value);
     case "tree":
     case "graph":
-      return cannotRender("Python", argument.kind);
+      return cannotHandle("Python", argument.kind);
   }
 }
 
