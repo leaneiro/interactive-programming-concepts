@@ -34,20 +34,21 @@ npm install
 npm run dev
 ```
 
-| Script                 | What it does                               |
-| ---------------------- | ------------------------------------------ |
-| `npm run dev`          | Start the development server               |
-| `npm run build`        | Type-check and build for production        |
-| `npm run preview`      | Serve the production build locally         |
-| `npm test`             | Run the test suite once                    |
-| `npm run test:watch`   | Run the tests on every change              |
-| `npm run lint`         | Lint with type-aware rules                 |
-| `npm run format`       | Format every file with Prettier            |
-| `npm run format:check` | Check formatting without changing anything |
+| Script                    | What it does                                      |
+| ------------------------- | ------------------------------------------------- |
+| `npm run dev`             | Start the development server                      |
+| `npm run build`           | Type-check and build for production               |
+| `npm run preview`         | Serve the production build locally                |
+| `npm test`                | Run the test suite once                           |
+| `npm run test:watch`      | Run the tests on every change                     |
+| `npm run verify:snippets` | Run every displayed snippet and check its results |
+| `npm run lint`            | Lint with type-aware rules                        |
+| `npm run format`          | Format every file with Prettier                   |
+| `npm run format:check`    | Check formatting without changing anything        |
 
 ## How it works
 
-The whole design is three small ideas.
+The whole design is four small ideas.
 
 **An algorithm is a pure function that returns a trace.** `trace(input)` runs the real algorithm and records a `Step` at every interesting moment. A step is plain data, and each field feeds one part of the screen:
 
@@ -62,6 +63,8 @@ The whole design is three small ideas.
 | `counters`                      | The counters in the timeline, such as comparisons made |
 
 **A snippet translates a trace into one language.** Each algorithm ships its source code in one or more languages. A snippet says which lines each region covers and what each variable is called in that language. Tracers never mention line numbers or variable names, so the same trace drives every language, and switching language keeps your place. Captions and explanations are rich text: `code(...)` marks a value, and `linesOf("region")` becomes "line 4" or "lines 5–7" for the language on screen.
+
+**A snippet has to work.** The code on screen is not just text: `npm run verify:snippets` builds a small program around each snippet, runs it in its own language, and compares the results with what the tracer produced for the same inputs.
 
 **A view draws a state.** `VisualState` is a union of `ArrayState`, `TreeState` and `GraphState`, and each one has a React component that renders it.
 
@@ -85,6 +88,11 @@ src/
   components/         the pieces of the studio
   hooks/              playback, keyboard shortcuts and theme
   lib/                random helpers, storage and the syntax highlighter
+verification/
+  cases.ts            inputs for each algorithm, with results taken from its tracer
+  languages/          one adapter per language: how to call a snippet and run it
+  preludes/           support code placed around a snippet, per language
+  snippets.verify.ts  runs every snippet of the catalog
 ```
 
 ## Adding an algorithm
@@ -252,7 +260,27 @@ Say you want linear search.
 
 5. Add a `trace.test.ts` next to the tracer. Tracers are pure functions, so the tests are short. `bubble-sort/trace.test.ts` is a good model.
 
-To offer an existing algorithm in another language, add the code as a new `.txt` file and one more entry in `snippets`. For a language the project does not know yet, also add it to `languages.ts` and give it a grammar in `src/lib/shikiHighlighter.ts`.
+6. Add the algorithm to `verification/cases.ts`: a few inputs, each with the result its tracer ends on. `npm run verify:snippets` then runs your snippet against them.
+
+To offer an existing algorithm in another language, add the code as a new `.txt` file and one more entry in `snippets`, then run `npm run verify:snippets`.
+
+For a language the project does not know yet, also add it to `languages.ts`, give it a grammar in `src/lib/shikiHighlighter.ts`, and write its adapter in `verification/languages/`. The compiler refuses a language without an adapter, so nothing reaches the screen unverified.
+
+## Verifying snippets
+
+```sh
+npm run verify:snippets
+```
+
+TypeScript and Python need nothing beyond `npm install`: TypeScript is compiled with the project's own compiler, and Python runs on Pyodide. Other languages use the toolchain on your machine, and a language you do not have installed is skipped with a note. CI has every toolchain and runs in strict mode, where a missing one is a failure.
+
+| Language   | Runs with             |
+| ---------- | --------------------- |
+| TypeScript | `typescript` from npm |
+| Python     | Pyodide from npm      |
+| Go         | `go` on your `PATH`   |
+
+An adapter says how to find the function in a snippet, how to write each kind of argument in that language, and how to run the resulting program. Arrays are enough for sorting; trees and graphs also need a prelude that defines the node type and builds the structure. When a check fails, the report names the call that went wrong and, for compile errors, prints the program that was run.
 
 ## Adding a data structure
 

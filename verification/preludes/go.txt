@@ -1,0 +1,11 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+func printResult(result any) {
+	encoded, _ := json.Marshal(result)
+	fmt.Println(string(encoded))
+}
