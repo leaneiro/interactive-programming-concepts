@@ -14,8 +14,14 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
       - run: npm ci
       - run: npm run lint
       - run: npm run format:check
       - run: npm run test
+      - run: npm run verify:snippets
+        env:
+          REQUIRE_ALL_TOOLCHAINS: true
       - run: npm run build
