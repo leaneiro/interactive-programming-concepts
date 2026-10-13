@@ -1,0 +1,22 @@
+vector<string> bfs(const Graph& graph, const string& start) {
+    unordered_set<string> visited;
+    deque<string> queue;
+    vector<string> result;
+
+    visited.insert(start);
+    queue.push_back(start);
+
+    while (!queue.empty()) {
+        string current = queue.front();
+        queue.pop_front();
+        result.push_back(current);
+
+        for (const string& neighbor : graph.at(current)) {
+            if (!visited.contains(neighbor)) {
+                visited.insert(neighbor);
+                queue.push_back(neighbor);
+            }
+        }
+    }
+    return result;
+}

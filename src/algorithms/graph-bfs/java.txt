@@ -1,0 +1,21 @@
+List<String> bfs(Map<String, List<String>> graph, String start) {
+    Set<String> visited = new HashSet<>();
+    Queue<String> queue = new ArrayDeque<>();
+    List<String> result = new ArrayList<>();
+
+    visited.add(start);
+    queue.add(start);
+
+    while (!queue.isEmpty()) {
+        String current = queue.poll();
+        result.add(current);
+
+        for (String neighbor : graph.get(current)) {
+            if (!visited.contains(neighbor)) {
+                visited.add(neighbor);
+                queue.add(neighbor);
+            }
+        }
+    }
+    return result;
+}

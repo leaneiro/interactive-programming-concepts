@@ -1,6 +1,12 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Main {
     static class TreeNode {
@@ -41,4 +47,10 @@ public class Main {
             values.addAll(listInOrder(node.right));
         }
         return values;
+    }
+
+    static String quoteAll(List<String> texts) {
+        return texts.stream()
+            .map(text -> "\"" + text + "\"")
+            .collect(Collectors.joining(",", "[", "]"));
     }

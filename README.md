@@ -13,7 +13,7 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 | BST Search     | Binary search tree | TypeScript, Python, Java, C++     |
 | BST Insert     | Binary search tree | TypeScript, Python, Java, C++     |
 | BST Delete     | Binary search tree | TypeScript, Python, Java, C++     |
-| BFS            | Graph              | TypeScript                        |
+| BFS            | Graph              | TypeScript, Python, Java, C++     |
 
 The studio has a timeline you can scrub, a history you can click, a memory and variables panel, and light and dark themes.
 

@@ -7,7 +7,12 @@ import {
   withTemporaryDirectory,
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
-import { cannotHandle, writeCalls, type LanguageAdapter } from "./adapter";
+import {
+  listAdjacency,
+  quoteAll,
+  writeCalls,
+  type LanguageAdapter,
+} from "./adapter";
 
 function renderArgument(argument: Argument): string {
   switch (argument.kind) {
@@ -19,8 +24,14 @@ function renderArgument(argument: Argument): string {
       return JSON.stringify(argument.value);
     case "tree":
       return `buildTree(${argument.values.join(", ")})`;
-    case "graph":
-      return cannotHandle("Java", argument.kind);
+    case "graph": {
+      const entries = listAdjacency(argument.graph).map(
+        ([node, neighbors]) =>
+          `Map.entry(${JSON.stringify(node)}, List.<String>of(${quoteAll(neighbors)}))`,
+      );
+
+      return `Map.ofEntries(${entries.join(", ")})`;
+    }
   }
 }
 
@@ -33,7 +44,7 @@ function writeOutput(resultKind: ResultKind, call: string): string {
     case "treeInOrder":
       return `System.out.println(listInOrder(${call}));`;
     case "texts":
-      return cannotHandle("Java", resultKind);
+      return `System.out.println(quoteAll(${call}));`;
   }
 }
 

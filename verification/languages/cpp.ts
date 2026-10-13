@@ -7,7 +7,12 @@ import {
   withTemporaryDirectory,
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
-import { cannotHandle, writeCalls, type LanguageAdapter } from "./adapter";
+import {
+  listAdjacency,
+  quoteAll,
+  writeCalls,
+  type LanguageAdapter,
+} from "./adapter";
 
 const compiler = "g++";
 const languageStandard = "-std=c++20";
@@ -22,21 +27,19 @@ function renderArgument(argument: Argument): string {
       return JSON.stringify(argument.value);
     case "tree":
       return `buildTree({${argument.values.join(", ")}})`;
-    case "graph":
-      return cannotHandle("C++", argument.kind);
+    case "graph": {
+      const entries = listAdjacency(argument.graph).map(
+        ([node, neighbors]) =>
+          `{${JSON.stringify(node)}, vector<string>{${quoteAll(neighbors)}}}`,
+      );
+
+      return `Graph{${entries.join(", ")}}`;
+    }
   }
 }
 
-function writeOutput(resultKind: ResultKind, call: string): string {
-  switch (resultKind) {
-    case "integers":
-    case "boolean":
-      return `printResult(${call});`;
-    case "treeInOrder":
-      return `printResult(listInOrder(${call}));`;
-    case "texts":
-      return cannotHandle("C++", resultKind);
-  }
+function readResult(resultKind: ResultKind, call: string): string {
+  return resultKind === "treeInOrder" ? `listInOrder(${call})` : call;
 }
 
 export const cppAdapter: LanguageAdapter = {
@@ -50,7 +53,11 @@ export const cppAdapter: LanguageAdapter = {
       entryPoint,
       verification,
       renderArgument,
-    ).map((call) => `    ${writeOutput(verification.resultKind, call)}`);
+    ).map((call) => {
+      const result = readResult(verification.resultKind, call);
+
+      return `    printResult(${result});`;
+    });
     const mainFunction = ["int main() {", ...outputStatements, "}"].join("\n");
 
     return [prelude, snippetCode, mainFunction].join("\n\n");

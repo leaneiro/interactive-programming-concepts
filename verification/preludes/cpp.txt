@@ -1,8 +1,14 @@
+#include <deque>
 #include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 using namespace std;
+
+using Graph = unordered_map<string, vector<string>>;
 
 struct TreeNode {
     int value;
@@ -58,6 +64,17 @@ void printResult(const vector<int>& values) {
             cout << ",";
         }
         cout << values[position];
+    }
+    cout << "]" << endl;
+}
+
+void printResult(const vector<string>& texts) {
+    cout << "[";
+    for (size_t position = 0; position < texts.size(); position++) {
+        if (position > 0) {
+            cout << ",";
+        }
+        cout << "\"" << texts[position] << "\"";
     }
     cout << "]" << endl;
 }

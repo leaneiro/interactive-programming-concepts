@@ -1,3 +1,4 @@
+import { neighborsOf, type Graph } from "@/structures/graph/graph";
 import type { AlgorithmVerification, Argument } from "../verification";
 
 export interface LanguageAdapter {
@@ -21,6 +22,14 @@ export function writeCalls(
 
     return `${entryPoint}(${renderedArguments.join(", ")})`;
   });
+}
+
+export function listAdjacency(graph: Graph): [string, string[]][] {
+  return graph.nodes.map((node) => [node, neighborsOf(graph, node)]);
+}
+
+export function quoteAll(texts: readonly string[]): string {
+  return texts.map((text) => JSON.stringify(text)).join(", ");
 }
 
 export function cannotHandle(languageName: string, kind: string): never {
