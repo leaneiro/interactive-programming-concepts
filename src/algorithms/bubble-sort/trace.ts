@@ -60,7 +60,7 @@ export function traceBubbleSort(input: readonly number[]): BubbleSortStep[] {
   record({
     region: "signature",
     caption: rich`start`,
-    historyEntry: "bubbleSort(a)",
+    historyEntry: "sort(a)",
     explanation: rich`Bubble sort walks through the array comparing neighbors and swapping the ones that are out of order. On every pass, the largest value that is not sorted yet ends up at the end.`,
   });
 

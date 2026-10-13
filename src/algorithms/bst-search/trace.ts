@@ -48,7 +48,7 @@ export function traceBstSearch({
   record({
     region: "signature",
     caption: rich`look for ${code(target)}`,
-    historyEntry: `bstSearch(root, ${target})`,
+    historyEntry: `search(root, ${target})`,
     explanation: rich`A binary search tree keeps smaller values to the left of every node and larger values to the right, so each comparison discards a whole subtree. The search starts at the root.`,
   });
 

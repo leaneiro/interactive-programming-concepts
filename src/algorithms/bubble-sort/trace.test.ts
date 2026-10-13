@@ -6,7 +6,7 @@ describe("traceBubbleSort", () => {
 
   it("logs every comparison with its outcome and every swap", () => {
     expect(steps.map((step) => step.historyEntry)).toEqual([
-      "bubbleSort(a)",
+      "sort(a)",
       "i = 0",
       "cmp(0,1) → swap",
       "swap(0,1)",

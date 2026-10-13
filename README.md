@@ -169,7 +169,7 @@ Say you want linear search.
      record({
        region: "signature",
        caption: rich`look for ${code(target)}`,
-       historyEntry: `linearSearch(values, ${target})`,
+       historyEntry: `search(values, ${target})`,
        explanation: rich`Linear search checks every position in order until it finds the target.`,
      });
 
@@ -204,7 +204,7 @@ Say you want linear search.
      record({
        region: "notFound",
        caption: rich`${code(target)} is not here`,
-       historyEntry: "return -1",
+       historyEntry: "not found",
        explanation: rich`Every position was checked and none of them holds ${code(target)}.`,
      });
 
@@ -295,7 +295,7 @@ An adapter says how to find the function in a snippet, how to write each kind of
 - Names say what things are, in full words. The linter rejects one-letter identifiers other than `x` and `y`.
 - No comments. If a piece of code needs one, rename or extract until it does not.
 - Tracers are pure. They never change their input, and every step carries its own snapshot.
-- Step texts stay language-neutral: refer to lines with `linesOf`, avoid variable names that only exist in one snippet, and avoid literals such as `null` or `true`, which change from one language to the next. A variable that points at nothing holds `emptyReference`.
+- Step texts stay language-neutral: refer to lines with `linesOf`, avoid variable names that only exist in one snippet, and avoid literals such as `null` or `true`, which change from one language to the next. A variable that points at nothing holds `emptyReference`. History entries use a short notation of their own, such as `cmp(0,1) → swap` or `visit(50)`, and never quote a call from one snippet.
 - Run `npm run lint`, `npm run format` and `npm test` before opening a pull request. CI runs the same checks.
 
 ## License

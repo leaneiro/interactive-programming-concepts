@@ -112,7 +112,7 @@ export function traceBstDelete({
       record({
         region: direction.recurse,
         caption: rich`go into the ${side} subtree`,
-        historyEntry: `bstDelete(${node.value}.${side}, ${target})`,
+        historyEntry: `delete(${node.value}.${side}, ${target})`,
         activeVariables: ["currentNode"],
         explanation: rich`The function calls itself for the ${side} child (${linesOf(direction.recurse)}). Whatever that call returns becomes the ${side} child of ${code(node.value)}.`,
       });
@@ -168,14 +168,14 @@ export function traceBstDelete({
     record({
       region: "copySuccessor",
       caption: rich`copy ${code(successor.value)} over ${code(target)}`,
-      historyEntry: `root.value = ${successor.value}`,
+      historyEntry: `copy(${successor.value})`,
       activeVariables: ["currentNode", "successor"],
       explanation: rich`The node keeps its position and its children but now holds the successor's value, ${code(successor.value)}. For a moment that value appears twice in the tree.`,
     });
     record({
       region: "removeSuccessor",
       caption: rich`remove the old ${code(successor.value)}`,
-      historyEntry: `bstDelete(root.right, ${successor.value})`,
+      historyEntry: `delete(${successor.value}.right, ${successor.value})`,
       activeVariables: ["successor"],
       explanation: rich`The original ${code(successor.value)} is deleted from the right subtree with a recursive call (${linesOf("removeSuccessor")}). It has no left child, so this ends in one of the simple cases.`,
     });
@@ -217,7 +217,7 @@ export function traceBstDelete({
   record({
     region: "signature",
     caption: rich`delete ${code(value)}`,
-    historyEntry: `bstDelete(root, ${value})`,
+    historyEntry: `delete(root, ${value})`,
     explanation: rich`Deleting has two parts: find the node, then repair the tree. The repair depends on how many children the node has.`,
   });
 

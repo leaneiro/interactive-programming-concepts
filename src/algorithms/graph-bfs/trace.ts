@@ -132,7 +132,7 @@ export function traceBreadthFirstSearch({
     record({
       region: "visit",
       caption: rich`visit ${code(node)}`,
-      historyEntry: `result.push(${node})`,
+      historyEntry: `visit(${node})`,
       activeVariables: ["currentNode", "result"],
       explanation: rich`${code(node)} is added to the result (${linesOf("visit")}). Next, each of its neighbors is checked.`,
     });
@@ -173,7 +173,7 @@ export function traceBreadthFirstSearch({
       record({
         region: "markVisited",
         caption: rich`mark ${code(neighbor)} as seen`,
-        historyEntry: `visited.add(${neighbor})`,
+        historyEntry: `mark(${neighbor})`,
         activeVariables: ["neighbor"],
         explanation: rich`${code(neighbor)} is marked right away, before it is processed. That is what prevents it from entering the queue a second time.`,
       });

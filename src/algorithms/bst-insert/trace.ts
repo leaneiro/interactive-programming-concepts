@@ -101,7 +101,7 @@ export function traceBstInsert({
     record({
       region: direction.recurse,
       caption: rich`go into the ${side} subtree`,
-      historyEntry: `bstInsert(${node.value}.${side}, ${value})`,
+      historyEntry: `insert(${node.value}.${side}, ${value})`,
       activeVariables: ["currentNode"],
       explanation: rich`The function calls itself for the ${side} child (${linesOf(direction.recurse)}). Whatever that call returns becomes the ${side} child of ${code(node.value)}.`,
     });
@@ -116,7 +116,7 @@ export function traceBstInsert({
     record({
       region: "createNode",
       caption: rich`empty spot → new node ${code(value)}`,
-      historyEntry: `new TreeNode(${value})`,
+      historyEntry: `create(${value})`,
       activeVariables: ["currentNode"],
       explanation: rich`This subtree is empty (${linesOf("createNode")}), so a new node holding ${code(value)} is created and returned.`,
     });
@@ -138,7 +138,7 @@ export function traceBstInsert({
   record({
     region: "signature",
     caption: rich`insert ${code(value)}`,
-    historyEntry: `bstInsert(root, ${value})`,
+    historyEntry: `insert(root, ${value})`,
     explanation: rich`To insert a value, walk down from the root as in a search. The first empty spot found along the way is where the new node belongs.`,
   });
 
@@ -151,7 +151,7 @@ export function traceBstInsert({
     record({
       region: "createNode",
       caption: rich`empty tree → ${code(value)} is the root`,
-      historyEntry: `new TreeNode(${value})`,
+      historyEntry: `create(${value})`,
       activeVariables: ["currentNode"],
       explanation: rich`The tree is empty (${linesOf("createNode")}), so the new node holding ${code(value)} becomes the root.`,
     });

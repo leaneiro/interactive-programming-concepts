@@ -73,7 +73,7 @@ export function traceSelectionSort(
   record({
     region: "signature",
     caption: rich`start`,
-    historyEntry: "selectionSort(arr)",
+    historyEntry: "sort(a)",
     explanation: rich`Selection sort looks for the smallest value in the stretch that is not sorted yet and puts it at the start of that stretch. On every pass, the sorted stretch at the beginning grows by one position.`,
   });
 
