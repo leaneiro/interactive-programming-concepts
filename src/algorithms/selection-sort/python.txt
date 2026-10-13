@@ -1,0 +1,11 @@
+def selection_sort(arr):
+    a = list(arr)
+    n = len(a)
+    for i in range(n - 1):
+        smallest = i
+        for j in range(i + 1, n):
+            if a[j] < a[smallest]:
+                smallest = j
+        if smallest != i:
+            a[i], a[smallest] = a[smallest], a[i]
+    return a
