@@ -1,0 +1,13 @@
+fn bst_insert(root: Option<Box<TreeNode>>, value: i32) -> Option<Box<TreeNode>> {
+    let Some(mut root) = root else {
+        return Some(Box::new(TreeNode::new(value)));
+    };
+
+    if value < root.value {
+        root.left = bst_insert(root.left.take(), value);
+    } else if value > root.value {
+        root.right = bst_insert(root.right.take(), value);
+    }
+
+    Some(root)
+}

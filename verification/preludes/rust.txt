@@ -1,0 +1,59 @@
+#![allow(dead_code, unused_imports)]
+
+use std::collections::{HashMap, HashSet, VecDeque};
+
+struct TreeNode {
+    value: i32,
+    left: Option<Box<TreeNode>>,
+    right: Option<Box<TreeNode>>,
+}
+
+impl TreeNode {
+    fn new(value: i32) -> Self {
+        TreeNode {
+            value,
+            left: None,
+            right: None,
+        }
+    }
+}
+
+fn build_tree(values: Vec<i32>) -> Option<Box<TreeNode>> {
+    let mut root = None;
+    for value in values {
+        root = insert_node(root, value);
+    }
+    root
+}
+
+fn insert_node(node: Option<Box<TreeNode>>, value: i32) -> Option<Box<TreeNode>> {
+    let Some(mut node) = node else {
+        return Some(Box::new(TreeNode::new(value)));
+    };
+    if value < node.value {
+        node.left = insert_node(node.left.take(), value);
+    } else if value > node.value {
+        node.right = insert_node(node.right.take(), value);
+    }
+    Some(node)
+}
+
+fn list_in_order(node: &Option<Box<TreeNode>>) -> Vec<i32> {
+    let Some(node) = node else {
+        return Vec::new();
+    };
+    let mut values = list_in_order(&node.left);
+    values.push(node.value);
+    values.extend(list_in_order(&node.right));
+    values
+}
+
+fn build_graph(adjacency: Vec<(&str, Vec<&str>)>) -> HashMap<String, Vec<String>> {
+    adjacency
+        .into_iter()
+        .map(|(node, neighbors)| {
+            let neighbors = neighbors.into_iter().map(String::from).collect();
+            (node.to_string(), neighbors)
+        })
+        .collect()
+}

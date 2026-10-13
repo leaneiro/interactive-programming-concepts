@@ -15,7 +15,7 @@ export interface LanguageAdapter {
 export function writeCalls(
   entryPoint: string,
   verification: AlgorithmVerification,
-  renderArgument: (argument: Argument) => string,
+  renderArgument: (argument: Argument, position: number) => string,
 ): string[] {
   return verification.cases.map((verificationCase) => {
     const renderedArguments = verificationCase.arguments.map(renderArgument);

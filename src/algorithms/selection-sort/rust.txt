@@ -1,0 +1,15 @@
+fn selection_sort(mut a: Vec<i32>) -> Vec<i32> {
+    let n = a.len();
+    for i in 0..n.saturating_sub(1) {
+        let mut smallest = i;
+        for j in i + 1..n {
+            if a[j] < a[smallest] {
+                smallest = j;
+            }
+        }
+        if smallest != i {
+            a.swap(i, smallest);
+        }
+    }
+    a
+}

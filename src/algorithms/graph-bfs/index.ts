@@ -4,6 +4,7 @@ import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
+import rustCode from "./rust.txt?raw";
 import { traceBreadthFirstSearch, type BreadthFirstSearchInput } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
 
@@ -129,6 +130,29 @@ export const breadthFirstSearch = defineAlgorithm({
         markVisited: line(16),
         enqueue: line(17),
         returnResult: line(21),
+      },
+      variableNames: {
+        startNode: "start",
+        currentNode: "current",
+        neighbor: "neighbor",
+        result: "result",
+      },
+    },
+    {
+      languageId: "rust",
+      code: rustCode,
+      regions: {
+        signature: line(1),
+        initialize: lines(2, 4),
+        enqueueStart: lines(6, 7),
+        whileLoop: line(9),
+        dequeue: line(9),
+        visit: line(10),
+        forEachNeighbor: line(12),
+        checkVisited: line(13),
+        markVisited: line(14),
+        enqueue: line(15),
+        returnResult: line(19),
       },
       variableNames: {
         startNode: "start",

@@ -1,0 +1,14 @@
+fn bst_search(root: &Option<Box<TreeNode>>, key: i32) -> bool {
+    let mut curr = root;
+    while let Some(node) = curr {
+        if key == node.value {
+            return true;
+        }
+        if key < node.value {
+            curr = &node.left;
+        } else {
+            curr = &node.right;
+        }
+    }
+    false
+}

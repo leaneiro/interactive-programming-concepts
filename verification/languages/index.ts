@@ -4,6 +4,7 @@ import { cppAdapter } from "./cpp";
 import { goAdapter } from "./go";
 import { javaAdapter } from "./java";
 import { pythonAdapter } from "./python";
+import { rustAdapter } from "./rust";
 import { typescriptAdapter } from "./typescript";
 
 export const adapters: Record<LanguageId, LanguageAdapter> = {
@@ -12,4 +13,5 @@ export const adapters: Record<LanguageId, LanguageAdapter> = {
   java: javaAdapter,
   cpp: cppAdapter,
   go: goAdapter,
+  rust: rustAdapter,
 };

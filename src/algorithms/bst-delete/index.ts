@@ -5,6 +5,7 @@ import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
+import rustCode from "./rust.txt?raw";
 import { traceBstDelete, type BstDeleteInput } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
 
@@ -141,6 +142,31 @@ export const bstDelete = defineAlgorithm({
         copySuccessor: line(28),
         removeSuccessor: line(29),
         returnNode: line(31),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
+        successor: "successor",
+      },
+    },
+    {
+      languageId: "rust",
+      code: rustCode,
+      regions: {
+        signature: line(1),
+        notFound: line(2),
+        compareLeft: line(4),
+        recurseLeft: line(5),
+        compareRight: line(6),
+        recurseRight: line(7),
+        found: lines(8, 9),
+        removeLeaf: lines(11, 13),
+        replaceWithRightChild: lines(15, 17),
+        replaceWithLeftChild: lines(18, 20),
+        findSuccessor: lines(22, 25),
+        copySuccessor: line(27),
+        removeSuccessor: line(28),
+        returnNode: line(30),
       },
       variableNames: {
         value: "value",
