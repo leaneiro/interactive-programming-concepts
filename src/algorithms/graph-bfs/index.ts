@@ -1,6 +1,7 @@
 import { defineAlgorithm, line, lines } from "@/algorithms/algorithm";
 import { createRandomConnectedGraph } from "@/structures/graph/randomGraph";
 import cppCode from "./cpp.txt?raw";
+import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import { traceBreadthFirstSearch, type BreadthFirstSearchInput } from "./trace";
@@ -93,6 +94,29 @@ export const breadthFirstSearch = defineAlgorithm({
     {
       languageId: "cpp",
       code: cppCode,
+      regions: {
+        signature: line(1),
+        initialize: lines(2, 4),
+        enqueueStart: lines(6, 7),
+        whileLoop: line(9),
+        dequeue: lines(10, 11),
+        visit: line(12),
+        forEachNeighbor: line(14),
+        checkVisited: line(15),
+        markVisited: line(16),
+        enqueue: line(17),
+        returnResult: line(21),
+      },
+      variableNames: {
+        startNode: "start",
+        currentNode: "current",
+        neighbor: "neighbor",
+        result: "result",
+      },
+    },
+    {
+      languageId: "go",
+      code: goCode,
       regions: {
         signature: line(1),
         initialize: lines(2, 4),

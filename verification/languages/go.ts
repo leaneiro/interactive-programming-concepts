@@ -6,8 +6,13 @@ import {
   runCommand,
   withTemporaryDirectory,
 } from "../process";
-import type { Argument } from "../verification";
-import { cannotHandle, writeCalls, type LanguageAdapter } from "./adapter";
+import type { Argument, ResultKind } from "../verification";
+import {
+  listAdjacency,
+  quoteAll,
+  writeCalls,
+  type LanguageAdapter,
+} from "./adapter";
 
 function renderArgument(argument: Argument): string {
   switch (argument.kind) {
@@ -18,9 +23,20 @@ function renderArgument(argument: Argument): string {
     case "text":
       return JSON.stringify(argument.value);
     case "tree":
-    case "graph":
-      return cannotHandle("Go", argument.kind);
+      return `buildTree(${argument.values.join(", ")})`;
+    case "graph": {
+      const entries = listAdjacency(argument.graph).map(
+        ([node, neighbors]) =>
+          `${JSON.stringify(node)}: {${quoteAll(neighbors)}}`,
+      );
+
+      return `map[string][]string{${entries.join(", ")}}`;
+    }
   }
+}
+
+function readResult(resultKind: ResultKind, call: string): string {
+  return resultKind === "treeInOrder" ? `listInOrder(${call})` : call;
 }
 
 export const goAdapter: LanguageAdapter = {
@@ -34,7 +50,11 @@ export const goAdapter: LanguageAdapter = {
       entryPoint,
       verification,
       renderArgument,
-    ).map((call) => `\tprintResult(${call})`);
+    ).map((call) => {
+      const result = readResult(verification.resultKind, call);
+
+      return `\tprintResult(${result})`;
+    });
     const mainFunction = ["func main() {", ...outputStatements, "}"].join("\n");
 
     return [prelude, snippetCode, mainFunction].join("\n\n");

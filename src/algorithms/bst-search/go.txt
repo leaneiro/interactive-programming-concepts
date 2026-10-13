@@ -1,0 +1,14 @@
+func bstSearch(root *TreeNode, key int) bool {
+	curr := root
+	for curr != nil {
+		if key == curr.value {
+			return true
+		}
+		if key < curr.value {
+			curr = curr.left
+		} else {
+			curr = curr.right
+		}
+	}
+	return false
+}

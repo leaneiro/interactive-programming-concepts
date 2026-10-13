@@ -1,6 +1,7 @@
 import { defineAlgorithm, line, lines } from "@/algorithms/algorithm";
 import { createRandomArray } from "@/structures/array/randomArray";
 import cppCode from "./cpp.txt?raw";
+import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import { traceSelectionSort } from "./trace";
@@ -77,6 +78,25 @@ export const selectionSort = defineAlgorithm({
     {
       languageId: "cpp",
       code: cppCode,
+      regions: {
+        signature: line(1),
+        outerLoop: lines(3, 4),
+        compare: line(6),
+        updateMinimum: line(7),
+        alreadyInPlace: line(10),
+        swap: line(11),
+        returnResult: line(14),
+      },
+      variableNames: {
+        length: "n",
+        targetIndex: "i",
+        candidateIndex: "j",
+        minimumIndex: "smallest",
+      },
+    },
+    {
+      languageId: "go",
+      code: goCode,
       regions: {
         signature: line(1),
         outerLoop: lines(3, 4),

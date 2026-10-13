@@ -2,6 +2,7 @@ import { defineAlgorithm, line, lines } from "@/algorithms/algorithm";
 import { pickRandom, randomInteger } from "@/lib/random";
 import { createRandomSearchTree } from "@/structures/tree/randomTree";
 import cppCode from "./cpp.txt?raw";
+import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import { traceBstDelete, type BstDeleteInput } from "./trace";
@@ -115,6 +116,31 @@ export const bstDelete = defineAlgorithm({
         copySuccessor: line(33),
         removeSuccessor: line(34),
         returnNode: line(36),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
+        successor: "successor",
+      },
+    },
+    {
+      languageId: "go",
+      code: goCode,
+      regions: {
+        signature: line(1),
+        notFound: lines(2, 4),
+        compareLeft: line(6),
+        recurseLeft: line(7),
+        compareRight: line(8),
+        recurseRight: line(9),
+        found: line(10),
+        removeLeaf: lines(12, 14),
+        replaceWithRightChild: lines(16, 18),
+        replaceWithLeftChild: lines(19, 21),
+        findSuccessor: lines(23, 26),
+        copySuccessor: line(28),
+        removeSuccessor: line(29),
+        returnNode: line(31),
       },
       variableNames: {
         value: "value",

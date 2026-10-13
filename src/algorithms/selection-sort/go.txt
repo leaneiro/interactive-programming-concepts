@@ -1,0 +1,15 @@
+func selectionSort(a []int) []int {
+	n := len(a)
+	for i := 0; i < n-1; i++ {
+		smallest := i
+		for j := i + 1; j < n; j++ {
+			if a[j] < a[smallest] {
+				smallest = j
+			}
+		}
+		if smallest != i {
+			a[i], a[smallest] = a[smallest], a[i]
+		}
+	}
+	return a
+}

@@ -1,0 +1,13 @@
+func bstInsert(root *TreeNode, value int) *TreeNode {
+	if root == nil {
+		return &TreeNode{value: value}
+	}
+
+	if value < root.value {
+		root.left = bstInsert(root.left, value)
+	} else if value > root.value {
+		root.right = bstInsert(root.right, value)
+	}
+
+	return root
+}

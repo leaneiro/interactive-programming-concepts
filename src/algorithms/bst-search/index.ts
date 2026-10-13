@@ -5,6 +5,7 @@ import {
   randomValueOutside,
 } from "@/structures/tree/randomTree";
 import cppCode from "./cpp.txt?raw";
+import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import { traceBstSearch, type BstSearchInput } from "./trace";
@@ -83,6 +84,22 @@ export const bstSearch = defineAlgorithm({
     {
       languageId: "cpp",
       code: cppCode,
+      regions: {
+        signature: line(1),
+        loop: line(3),
+        found: lines(4, 5),
+        goLeft: lines(7, 8),
+        goRight: lines(9, 10),
+        notFound: line(13),
+      },
+      variableNames: {
+        target: "key",
+        currentNode: "curr",
+      },
+    },
+    {
+      languageId: "go",
+      code: goCode,
       regions: {
         signature: line(1),
         loop: line(3),
