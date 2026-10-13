@@ -32,6 +32,21 @@ TreeNode* buildTree(const vector<int>& values) {
     return root;
 }
 
+void collectInOrder(TreeNode* node, vector<int>& values) {
+    if (node == nullptr) {
+        return;
+    }
+    collectInOrder(node->left, values);
+    values.push_back(node->value);
+    collectInOrder(node->right, values);
+}
+
+vector<int> listInOrder(TreeNode* node) {
+    vector<int> values;
+    collectInOrder(node, values);
+    return values;
+}
+
 void printResult(bool result) {
     cout << (result ? "true" : "false") << endl;
 }

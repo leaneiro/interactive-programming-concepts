@@ -30,8 +30,9 @@ function writeOutput(resultKind: ResultKind, call: string): string {
       return `System.out.println(Arrays.toString(${call}));`;
     case "boolean":
       return `System.out.println(${call});`;
-    case "texts":
     case "treeInOrder":
+      return `System.out.println(listInOrder(${call}));`;
+    case "texts":
       return cannotHandle("Java", resultKind);
   }
 }

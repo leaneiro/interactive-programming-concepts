@@ -1,6 +1,6 @@
 import { loadPyodide, type PyodideInterface } from "pyodide";
 import prelude from "../preludes/python.txt?raw";
-import type { Argument } from "../verification";
+import type { Argument, ResultKind } from "../verification";
 import { cannotHandle, writeCalls, type LanguageAdapter } from "./adapter";
 
 let interpreterLoading: Promise<PyodideInterface> | null = null;
@@ -26,6 +26,10 @@ function renderArgument(argument: Argument): string {
   }
 }
 
+function readResult(resultKind: ResultKind, call: string): string {
+  return resultKind === "treeInOrder" ? `list_in_order(${call})` : call;
+}
+
 export const pythonAdapter: LanguageAdapter = {
   entryPointPattern: /def\s+(\w+)\s*\(/,
 
@@ -43,7 +47,11 @@ export const pythonAdapter: LanguageAdapter = {
       entryPoint,
       verification,
       renderArgument,
-    ).map((call) => `print(json.dumps(${call}))`);
+    ).map((call) => {
+      const result = readResult(verification.resultKind, call);
+
+      return `print(json.dumps(${result}))`;
+    });
 
     return [prelude, snippetCode, ...outputStatements].join("\n\n");
   },

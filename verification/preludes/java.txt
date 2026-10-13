@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     static class TreeNode {
@@ -29,4 +31,14 @@ public class Main {
             node.right = insertNode(node.right, value);
         }
         return node;
+    }
+
+    static List<Integer> listInOrder(TreeNode node) {
+        List<Integer> values = new ArrayList<>();
+        if (node != null) {
+            values.addAll(listInOrder(node.left));
+            values.add(node.value);
+            values.addAll(listInOrder(node.right));
+        }
+        return values;
     }

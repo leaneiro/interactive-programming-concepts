@@ -1,0 +1,10 @@
+def bst_insert(root, value):
+    if root is None:
+        return TreeNode(value)
+
+    if value < root.value:
+        root.left = bst_insert(root.left, value)
+    elif value > root.value:
+        root.right = bst_insert(root.right, value)
+
+    return root

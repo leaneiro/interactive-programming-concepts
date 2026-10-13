@@ -32,8 +32,9 @@ function writeOutput(resultKind: ResultKind, call: string): string {
     case "integers":
     case "boolean":
       return `printResult(${call});`;
-    case "texts":
     case "treeInOrder":
+      return `printResult(listInOrder(${call}));`;
+    case "texts":
       return cannotHandle("C++", resultKind);
   }
 }
