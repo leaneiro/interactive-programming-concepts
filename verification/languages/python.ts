@@ -20,6 +20,7 @@ function renderArgument(argument: Argument): string {
     case "text":
       return JSON.stringify(argument.value);
     case "tree":
+      return `build_tree(${JSON.stringify(argument.values)})`;
     case "graph":
       return cannotHandle("Python", argument.kind);
   }

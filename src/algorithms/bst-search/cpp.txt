@@ -1,0 +1,14 @@
+bool bstSearch(TreeNode* root, int key) {
+    TreeNode* curr = root;
+    while (curr != nullptr) {
+        if (key == curr->value) {
+            return true;
+        }
+        if (key < curr->value) {
+            curr = curr->left;
+        } else {
+            curr = curr->right;
+        }
+    }
+    return false;
+}

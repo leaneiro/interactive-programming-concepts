@@ -10,7 +10,7 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 | -------------- | ------------------ | --------------------------------- |
 | Bubble Sort    | Array              | TypeScript, Python, Java, C++, Go |
 | Selection Sort | Array              | TypeScript, Python, Java, C++     |
-| BST Search     | Binary search tree | TypeScript                        |
+| BST Search     | Binary search tree | TypeScript, Python, Java, C++     |
 | BST Insert     | Binary search tree | TypeScript                        |
 | BST Delete     | Binary search tree | TypeScript                        |
 | BFS            | Graph              | TypeScript                        |

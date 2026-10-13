@@ -1,1 +1,25 @@
 import json
+
+
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+
+def build_tree(values):
+    root = None
+    for value in values:
+        root = insert_node(root, value)
+    return root
+
+
+def insert_node(node, value):
+    if node is None:
+        return TreeNode(value)
+    if value < node.value:
+        node.left = insert_node(node.left, value)
+    elif value > node.value:
+        node.right = insert_node(node.right, value)
+    return node

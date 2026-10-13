@@ -21,6 +21,7 @@ function renderArgument(argument: Argument): string {
     case "text":
       return JSON.stringify(argument.value);
     case "tree":
+      return `buildTree({${argument.values.join(", ")}})`;
     case "graph":
       return cannotHandle("C++", argument.kind);
   }
@@ -29,8 +30,8 @@ function renderArgument(argument: Argument): string {
 function writeOutput(resultKind: ResultKind, call: string): string {
   switch (resultKind) {
     case "integers":
-      return `printResult(${call});`;
     case "boolean":
+      return `printResult(${call});`;
     case "texts":
     case "treeInOrder":
       return cannotHandle("C++", resultKind);

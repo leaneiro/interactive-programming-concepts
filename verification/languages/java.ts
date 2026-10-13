@@ -18,6 +18,7 @@ function renderArgument(argument: Argument): string {
     case "text":
       return JSON.stringify(argument.value);
     case "tree":
+      return `buildTree(${argument.values.join(", ")})`;
     case "graph":
       return cannotHandle("Java", argument.kind);
   }
