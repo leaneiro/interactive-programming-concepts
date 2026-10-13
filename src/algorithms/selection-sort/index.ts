@@ -29,7 +29,7 @@ export const selectionSort = defineAlgorithm({
         length: "a.length",
         targetIndex: "i",
         candidateIndex: "j",
-        minimumIndex: "min",
+        minimumIndex: "smallest",
       },
     },
   ],

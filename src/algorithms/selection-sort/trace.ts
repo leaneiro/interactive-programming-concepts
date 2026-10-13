@@ -86,10 +86,10 @@ export function traceSelectionSort(
     record({
       region: "outerLoop",
       caption: rich`find the value for ${code(`a[${targetIndex}]`)}`,
-      historyEntry: `i = ${targetIndex}, min = ${minimumIndex}`,
+      historyEntry: `i = ${targetIndex}, smallest = ${minimumIndex}`,
       comparedIndices: [targetIndex],
       activeVariables: ["targetIndex", "minimumIndex"],
-      explanation: rich`Pass ${code(`i = ${targetIndex}`)} begins. For now the smallest known value is ${code(`a[${targetIndex}] = ${values[targetIndex]}`)} itself, so ${code(`min = ${targetIndex}`)}.`,
+      explanation: rich`Pass ${code(`i = ${targetIndex}`)} begins. For now the smallest known value is ${code(`a[${targetIndex}] = ${values[targetIndex]}`)} itself, so ${code(`smallest = ${targetIndex}`)}.`,
     });
 
     for (
@@ -121,7 +121,7 @@ export function traceSelectionSort(
       record({
         region: "compare",
         caption: rich`${code(`${candidateValue} < ${minimumValue}`)} → new minimum`,
-        historyEntry: `cmp(${candidateIndex},${minimumIndex}) → min`,
+        historyEntry: `cmp(${candidateIndex},${minimumIndex}) → smallest`,
         comparedIndices,
         activeVariables: ["candidateIndex"],
         explanation: rich`Compares the candidate with the current minimum (${linesOf("compare")}). Since ${candidateElement} is smaller than ${minimumElement}, it becomes the new minimum (${linesOf("updateMinimum")}).`,
@@ -133,10 +133,10 @@ export function traceSelectionSort(
       record({
         region: "updateMinimum",
         caption: rich`minimum is now ${code(candidateValue)}`,
-        historyEntry: `min = ${minimumIndex}`,
+        historyEntry: `smallest = ${minimumIndex}`,
         comparedIndices: [minimumIndex],
         activeVariables: ["minimumIndex"],
-        explanation: rich`${code(`min = ${minimumIndex}`)}: the smallest value found in this pass so far is ${candidateElement}.`,
+        explanation: rich`${code(`smallest = ${minimumIndex}`)}: the smallest value found in this pass so far is ${candidateElement}.`,
       });
     }
 
@@ -149,7 +149,7 @@ export function traceSelectionSort(
         caption: rich`${code(values[targetIndex])} is already in place`,
         historyEntry: `a[${targetIndex}] ok`,
         activeVariables: ["minimumIndex"],
-        explanation: rich`No smaller value showed up: ${code("min")} is still equal to ${code("i")} (${linesOf("alreadyInPlace")}), so ${code(`a[${targetIndex}] = ${values[targetIndex]}`)} is already in its final position and nothing is swapped.`,
+        explanation: rich`No smaller value showed up: ${code("smallest")} is still equal to ${code("i")} (${linesOf("alreadyInPlace")}), so ${code(`a[${targetIndex}] = ${values[targetIndex]}`)} is already in its final position and nothing is swapped.`,
       });
       continue;
     }
