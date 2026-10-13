@@ -1,0 +1,16 @@
+func selectionSort(_ arr: [Int]) -> [Int] {
+    var a = arr
+    let n = a.count
+    for i in 0..<max(n - 1, 0) {
+        var smallest = i
+        for j in i + 1..<n {
+            if a[j] < a[smallest] {
+                smallest = j
+            }
+        }
+        if smallest != i {
+            a.swapAt(i, smallest)
+        }
+    }
+    return a
+}

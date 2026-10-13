@@ -5,6 +5,7 @@ import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
+import swiftCode from "./swift.txt?raw";
 import { traceSelectionSort } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
 
@@ -125,6 +126,25 @@ export const selectionSort = defineAlgorithm({
         alreadyInPlace: line(10),
         swap: line(11),
         returnResult: line(14),
+      },
+      variableNames: {
+        length: "n",
+        targetIndex: "i",
+        candidateIndex: "j",
+        minimumIndex: "smallest",
+      },
+    },
+    {
+      languageId: "swift",
+      code: swiftCode,
+      regions: {
+        signature: line(1),
+        outerLoop: lines(4, 5),
+        compare: line(7),
+        updateMinimum: line(8),
+        alreadyInPlace: line(11),
+        swap: line(12),
+        returnResult: line(15),
       },
       variableNames: {
         length: "n",

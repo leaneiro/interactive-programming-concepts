@@ -9,6 +9,7 @@ import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
+import swiftCode from "./swift.txt?raw";
 import { traceBstSearch, type BstSearchInput } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
 
@@ -117,6 +118,22 @@ export const bstSearch = defineAlgorithm({
     {
       languageId: "rust",
       code: rustCode,
+      regions: {
+        signature: line(1),
+        loop: line(3),
+        found: lines(4, 5),
+        goLeft: lines(7, 8),
+        goRight: lines(9, 10),
+        notFound: line(13),
+      },
+      variableNames: {
+        target: "key",
+        currentNode: "curr",
+      },
+    },
+    {
+      languageId: "swift",
+      code: swiftCode,
       regions: {
         signature: line(1),
         loop: line(3),

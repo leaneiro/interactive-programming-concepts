@@ -10,6 +10,7 @@ const grammars = {
   cpp: () => import("shiki/langs/cpp.mjs"),
   go: () => import("shiki/langs/go.mjs"),
   rust: () => import("shiki/langs/rust.mjs"),
+  swift: () => import("shiki/langs/swift.mjs"),
 } satisfies Record<LanguageId, () => Promise<unknown>>;
 
 const themeName = "algo-lab";

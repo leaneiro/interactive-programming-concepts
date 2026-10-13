@@ -9,6 +9,7 @@ import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
+import swiftCode from "./swift.txt?raw";
 import { traceBstInsert, type BstInsertInput } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
 
@@ -115,6 +116,23 @@ export const bstInsert = defineAlgorithm({
     {
       languageId: "rust",
       code: rustCode,
+      regions: {
+        signature: line(1),
+        createNode: lines(2, 4),
+        compareLeft: line(6),
+        recurseLeft: line(7),
+        compareRight: line(8),
+        recurseRight: line(9),
+        returnNode: line(12),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
+      },
+    },
+    {
+      languageId: "swift",
+      code: swiftCode,
       regions: {
         signature: line(1),
         createNode: lines(2, 4),

@@ -1,0 +1,14 @@
+func bstSearch(_ root: TreeNode?, _ key: Int) -> Bool {
+    var curr = root
+    while let node = curr {
+        if key == node.value {
+            return true
+        }
+        if key < node.value {
+            curr = node.left
+        } else {
+            curr = node.right
+        }
+    }
+    return false
+}

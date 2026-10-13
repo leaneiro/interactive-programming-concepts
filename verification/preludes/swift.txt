@@ -1,0 +1,36 @@
+final class TreeNode {
+    var value: Int
+    var left: TreeNode?
+    var right: TreeNode?
+
+    init(_ value: Int) {
+        self.value = value
+    }
+}
+
+func buildTree(_ values: [Int]) -> TreeNode? {
+    var root: TreeNode?
+    for value in values {
+        root = insertNode(root, value)
+    }
+    return root
+}
+
+func insertNode(_ node: TreeNode?, _ value: Int) -> TreeNode {
+    guard let node else {
+        return TreeNode(value)
+    }
+    if value < node.value {
+        node.left = insertNode(node.left, value)
+    } else if value > node.value {
+        node.right = insertNode(node.right, value)
+    }
+    return node
+}
+
+func listInOrder(_ node: TreeNode?) -> [Int] {
+    guard let node else {
+        return []
+    }
+    return listInOrder(node.left) + [node.value] + listInOrder(node.right)
+}

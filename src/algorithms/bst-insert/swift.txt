@@ -1,0 +1,13 @@
+func bstInsert(_ root: TreeNode?, _ value: Int) -> TreeNode {
+    guard let root else {
+        return TreeNode(value)
+    }
+
+    if value < root.value {
+        root.left = bstInsert(root.left, value)
+    } else if value > root.value {
+        root.right = bstInsert(root.right, value)
+    }
+
+    return root
+}

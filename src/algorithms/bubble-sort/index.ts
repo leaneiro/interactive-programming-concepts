@@ -5,6 +5,7 @@ import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
+import swiftCode from "./swift.txt?raw";
 import { traceBubbleSort } from "./trace";
 import typescriptCode from "./typescript.txt?raw";
 
@@ -115,6 +116,23 @@ export const bubbleSort = defineAlgorithm({
         compare: line(5),
         swap: line(6),
         returnResult: line(10),
+      },
+      variableNames: {
+        length: "n",
+        outerIndex: "i",
+        innerIndex: "j",
+      },
+    },
+    {
+      languageId: "swift",
+      code: swiftCode,
+      regions: {
+        signature: line(1),
+        outerLoop: line(4),
+        innerLoop: line(5),
+        compare: line(6),
+        swap: line(7),
+        returnResult: line(11),
       },
       variableNames: {
         length: "n",

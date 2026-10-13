@@ -1,0 +1,21 @@
+func bfs(_ graph: [String: [String]], _ start: String) -> [String] {
+    var visited: Set<String> = []
+    var queue: [String] = []
+    var result: [String] = []
+
+    visited.insert(start)
+    queue.append(start)
+
+    while !queue.isEmpty {
+        let current = queue.removeFirst()
+        result.append(current)
+
+        for neighbor in graph[current] ?? [] {
+            if !visited.contains(neighbor) {
+                visited.insert(neighbor)
+                queue.append(neighbor)
+            }
+        }
+    }
+    return result
+}
