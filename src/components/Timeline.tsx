@@ -2,8 +2,6 @@ import type { PointerEvent } from "react";
 import type { LineRange, Step } from "@/algorithms/algorithm";
 import { RichTextView } from "./RichTextView";
 
-const tallTickInterval = 8;
-
 interface TimelineProps {
   step: Step;
   stepIndex: number;
@@ -48,14 +46,13 @@ export function Timeline({
             seekToPointer(event);
           }
         }}
-        className="flex h-4.5 cursor-pointer touch-none items-end gap-px"
+        className="flex h-4.5 cursor-pointer touch-none items-center gap-px"
       >
         {Array.from({ length: stepCount }, (_unused, tickIndex) => (
           <span
             key={tickIndex}
             data-position={describeTickPosition(tickIndex, stepIndex)}
-            data-tall={tickIndex % tallTickInterval === 0}
-            className="h-1.75 flex-1 rounded-[1px] bg-border-strong data-[position=current]:h-4.5 data-[position=current]:bg-accent data-[position=past]:bg-secondary data-[tall=true]:h-3 data-[position=current]:data-[tall=true]:h-4.5"
+            className="h-1.5 flex-1 rounded-full bg-border-strong data-[position=current]:bg-accent data-[position=past]:bg-secondary"
           />
         ))}
       </div>
