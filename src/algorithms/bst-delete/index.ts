@@ -4,6 +4,7 @@ import { createRandomSearchTree } from "@/structures/tree/randomTree";
 import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
+import kotlinCode from "./kotlin.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
 import swiftCode from "./swift.txt?raw";
@@ -193,6 +194,31 @@ export const bstDelete = defineAlgorithm({
         copySuccessor: line(29),
         removeSuccessor: line(30),
         returnNode: line(32),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
+        successor: "successor",
+      },
+    },
+    {
+      languageId: "kotlin",
+      code: kotlinCode,
+      regions: {
+        signature: line(1),
+        notFound: lines(2, 4),
+        compareLeft: line(6),
+        recurseLeft: line(7),
+        compareRight: line(8),
+        recurseRight: line(9),
+        found: lines(10, 11),
+        removeLeaf: lines(13, 15),
+        replaceWithRightChild: line(17),
+        replaceWithLeftChild: line(18),
+        findSuccessor: lines(20, 23),
+        copySuccessor: line(25),
+        removeSuccessor: line(26),
+        returnNode: line(28),
       },
       variableNames: {
         value: "value",

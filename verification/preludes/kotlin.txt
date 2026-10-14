@@ -1,0 +1,34 @@
+class TreeNode(var value: Int) {
+    var left: TreeNode? = null
+    var right: TreeNode? = null
+}
+
+fun buildTree(vararg values: Int): TreeNode? {
+    var root: TreeNode? = null
+    for (value in values) {
+        root = insertNode(root, value)
+    }
+    return root
+}
+
+fun insertNode(node: TreeNode?, value: Int): TreeNode {
+    if (node == null) {
+        return TreeNode(value)
+    }
+    if (value < node.value) {
+        node.left = insertNode(node.left, value)
+    } else if (value > node.value) {
+        node.right = insertNode(node.right, value)
+    }
+    return node
+}
+
+fun listInOrder(node: TreeNode?): List<Int> {
+    if (node == null) {
+        return emptyList()
+    }
+    return listInOrder(node.left) + node.value + listInOrder(node.right)
+}
+
+fun quoteAll(texts: List<String>): String =
+    texts.joinToString(separator = ",", prefix = "[", postfix = "]") { text -> "\"$text\"" }

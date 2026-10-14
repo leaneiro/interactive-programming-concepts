@@ -24,7 +24,10 @@ export async function findCommandVersion(
   versionPattern: RegExp,
 ): Promise<string | null> {
   try {
-    const output = await runCommand(command, versionArguments);
+    const { stdout, stderr } = await executeFile(command, [
+      ...versionArguments,
+    ]);
+    const output = `${stdout}${stderr}`;
 
     return versionPattern.exec(output)?.[1] ?? output.trim();
   } catch {

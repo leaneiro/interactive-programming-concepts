@@ -11,6 +11,7 @@ const grammars = {
   go: () => import("shiki/langs/go.mjs"),
   rust: () => import("shiki/langs/rust.mjs"),
   swift: () => import("shiki/langs/swift.mjs"),
+  kotlin: () => import("shiki/langs/kotlin.mjs"),
 } satisfies Record<LanguageId, () => Promise<unknown>>;
 
 const themeName = "algo-lab";
@@ -28,7 +29,7 @@ const theme = {
       settings: { foreground: "var(--color-syntax-keyword)" },
     },
     {
-      scope: ["keyword.operator"],
+      scope: ["keyword.operator", "storage.modifier.other.kotlin"],
       settings: { foreground: "var(--color-syntax-plain)" },
     },
     {

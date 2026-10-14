@@ -3,6 +3,7 @@ import type { LanguageAdapter } from "./adapter";
 import { cppAdapter } from "./cpp";
 import { goAdapter } from "./go";
 import { javaAdapter } from "./java";
+import { kotlinAdapter } from "./kotlin";
 import { pythonAdapter } from "./python";
 import { rustAdapter } from "./rust";
 import { swiftAdapter } from "./swift";
@@ -16,4 +17,5 @@ export const adapters: Record<LanguageId, LanguageAdapter> = {
   go: goAdapter,
   rust: rustAdapter,
   swift: swiftAdapter,
+  kotlin: kotlinAdapter,
 };

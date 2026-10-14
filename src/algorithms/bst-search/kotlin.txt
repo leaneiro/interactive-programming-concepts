@@ -1,0 +1,14 @@
+fun bstSearch(root: TreeNode?, key: Int): Boolean {
+    var curr = root
+    while (curr != null) {
+        if (key == curr.value) {
+            return true
+        }
+        if (key < curr.value) {
+            curr = curr.left
+        } else {
+            curr = curr.right
+        }
+    }
+    return false
+}

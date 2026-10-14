@@ -6,6 +6,7 @@ export const languageIds = [
   "go",
   "rust",
   "swift",
+  "kotlin",
 ] as const;
 
 export type LanguageId = (typeof languageIds)[number];
@@ -23,4 +24,5 @@ export const languages: Record<LanguageId, Language> = {
   go: { name: "Go", fileExtension: "go" },
   rust: { name: "Rust", fileExtension: "rs" },
   swift: { name: "Swift", fileExtension: "swift" },
+  kotlin: { name: "Kotlin", fileExtension: "kt" },
 };

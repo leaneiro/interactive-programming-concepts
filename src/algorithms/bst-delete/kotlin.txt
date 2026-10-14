@@ -1,0 +1,29 @@
+fun bstDelete(root: TreeNode?, value: Int): TreeNode? {
+    if (root == null) {
+        return null
+    }
+
+    if (value < root.value) {
+        root.left = bstDelete(root.left, value)
+    } else if (value > root.value) {
+        root.right = bstDelete(root.right, value)
+    } else {
+        // Node found: handle 3 cases
+        // Case 1: Leaf node
+        if (root.left == null && root.right == null) {
+            return null
+        }
+        // Case 2: One child
+        val left = root.left ?: return root.right
+        val right = root.right ?: return left
+        // Case 3: Two children - Find min in right subtree
+        var successor = right
+        while (true) {
+            successor = successor.left ?: break
+        }
+
+        root.value = successor.value
+        root.right = bstDelete(root.right, successor.value)
+    }
+    return root
+}

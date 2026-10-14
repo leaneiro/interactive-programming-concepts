@@ -3,6 +3,7 @@ import { createRandomArray } from "@/structures/array/randomArray";
 import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
+import kotlinCode from "./kotlin.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
 import swiftCode from "./swift.txt?raw";
@@ -148,6 +149,26 @@ export const selectionSort = defineAlgorithm({
       },
       variableNames: {
         length: "n",
+        targetIndex: "i",
+        candidateIndex: "j",
+        minimumIndex: "smallest",
+      },
+    },
+    {
+      languageId: "kotlin",
+      code: kotlinCode,
+      regions: {
+        signature: line(1),
+        outerLoop: lines(2, 3),
+        compare: line(5),
+        updateMinimum: line(6),
+        alreadyInPlace: line(9),
+        swap: lines(10, 12),
+        returnResult: line(15),
+      },
+      variableNames: {
+        temporary: "tmp",
+        length: "a.size",
         targetIndex: "i",
         candidateIndex: "j",
         minimumIndex: "smallest",

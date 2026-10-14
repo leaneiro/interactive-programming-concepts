@@ -7,6 +7,7 @@ import {
 import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
+import kotlinCode from "./kotlin.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
 import swiftCode from "./swift.txt?raw";
@@ -133,6 +134,23 @@ export const bstInsert = defineAlgorithm({
     {
       languageId: "swift",
       code: swiftCode,
+      regions: {
+        signature: line(1),
+        createNode: lines(2, 4),
+        compareLeft: line(6),
+        recurseLeft: line(7),
+        compareRight: line(8),
+        recurseRight: line(9),
+        returnNode: line(12),
+      },
+      variableNames: {
+        value: "value",
+        currentNode: "root",
+      },
+    },
+    {
+      languageId: "kotlin",
+      code: kotlinCode,
       regions: {
         signature: line(1),
         createNode: lines(2, 4),

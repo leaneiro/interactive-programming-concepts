@@ -3,6 +3,7 @@ import { createRandomArray } from "@/structures/array/randomArray";
 import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
+import kotlinCode from "./kotlin.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
 import swiftCode from "./swift.txt?raw";
@@ -136,6 +137,24 @@ export const bubbleSort = defineAlgorithm({
       },
       variableNames: {
         length: "n",
+        outerIndex: "i",
+        innerIndex: "j",
+      },
+    },
+    {
+      languageId: "kotlin",
+      code: kotlinCode,
+      regions: {
+        signature: line(1),
+        outerLoop: line(2),
+        innerLoop: line(3),
+        compare: line(4),
+        swap: lines(5, 7),
+        returnResult: line(11),
+      },
+      variableNames: {
+        temporary: "t",
+        length: "a.size",
         outerIndex: "i",
         innerIndex: "j",
       },

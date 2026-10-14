@@ -3,6 +3,7 @@ import { createRandomConnectedGraph } from "@/structures/graph/randomGraph";
 import cppCode from "./cpp.txt?raw";
 import goCode from "./go.txt?raw";
 import javaCode from "./java.txt?raw";
+import kotlinCode from "./kotlin.txt?raw";
 import pythonCode from "./python.txt?raw";
 import rustCode from "./rust.txt?raw";
 import swiftCode from "./swift.txt?raw";
@@ -165,6 +166,29 @@ export const breadthFirstSearch = defineAlgorithm({
     {
       languageId: "swift",
       code: swiftCode,
+      regions: {
+        signature: line(1),
+        initialize: lines(2, 4),
+        enqueueStart: lines(6, 7),
+        whileLoop: line(9),
+        dequeue: line(10),
+        visit: line(11),
+        forEachNeighbor: line(13),
+        checkVisited: line(14),
+        markVisited: line(15),
+        enqueue: line(16),
+        returnResult: line(20),
+      },
+      variableNames: {
+        startNode: "start",
+        currentNode: "current",
+        neighbor: "neighbor",
+        result: "result",
+      },
+    },
+    {
+      languageId: "kotlin",
+      code: kotlinCode,
       regions: {
         signature: line(1),
         initialize: lines(2, 4),
