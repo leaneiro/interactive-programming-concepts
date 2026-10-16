@@ -1,4 +1,5 @@
 import { ArrayView } from "./array/ArrayView";
+import { ForestView } from "./forest/ForestView";
 import { GraphView } from "./graph/GraphView";
 import { TreeView } from "./tree/TreeView";
 import type { VisualState } from "./visualState";
@@ -15,5 +16,7 @@ export function StructureView({ state }: StructureViewProps) {
       return <TreeView state={state} />;
     case "graph":
       return <GraphView state={state} />;
+    case "forest":
+      return <ForestView state={state} />;
   }
 }

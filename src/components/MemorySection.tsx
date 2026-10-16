@@ -37,6 +37,21 @@ export function MemorySection({ state }: MemorySectionProps) {
           }))}
         />
       );
+    case "forest":
+      return (
+        <MemoryRow
+          label="Memory"
+          detail={`${state.name}[${state.parent.length}]`}
+          note={decorativeAddress}
+          cellSizing="fill"
+          cells={state.parent.map((parentElement, element) => ({
+            key: element,
+            label: element,
+            value: parentElement,
+            isActive: state.focusedElements.includes(element),
+          }))}
+        />
+      );
     case "tree":
       return null;
   }
