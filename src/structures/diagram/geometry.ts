@@ -3,6 +3,8 @@ export interface Point {
   y: number;
 }
 
+export const nodeRadius = 22;
+
 const padding = 48;
 const minimumWidth = 640;
 const minimumHeight = 320;
