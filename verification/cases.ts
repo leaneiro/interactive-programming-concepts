@@ -11,6 +11,11 @@ import { breadthFirstSearch } from "@/algorithms/graph-bfs";
 import { traceBreadthFirstSearch } from "@/algorithms/graph-bfs/trace";
 import { selectionSort } from "@/algorithms/selection-sort";
 import { traceSelectionSort } from "@/algorithms/selection-sort/trace";
+import { unionFind } from "@/algorithms/union-find";
+import {
+  traceUnionFind,
+  type ElementPair,
+} from "@/algorithms/union-find/trace";
 import type { ArrayState } from "@/structures/array/arrayState";
 import type { Graph } from "@/structures/graph/graph";
 import {
@@ -21,6 +26,7 @@ import {
   graphOf,
   integer,
   integers,
+  pairsOf,
   text,
   tree,
   type AlgorithmVerification,
@@ -124,6 +130,18 @@ function searchOrderCase(graph: Graph, startNode: string): VerificationCase {
   };
 }
 
+function unionCase(
+  elementCount: number,
+  pairs: readonly ElementPair[],
+): VerificationCase {
+  const steps = traceUnionFind({ elementCount, pairs });
+
+  return {
+    arguments: [integer(elementCount), pairsOf(pairs)],
+    expected: lastOf(steps).state.parent,
+  };
+}
+
 export const verifications: ReadonlyMap<string, AlgorithmVerification> =
   new Map<string, AlgorithmVerification>([
     [bubbleSort.id, verifySorting(traceBubbleSort)],
@@ -163,6 +181,45 @@ export const verifications: ReadonlyMap<string, AlgorithmVerification> =
           deleteCase([50, 30, 20, 10], 30),
           deleteCase([7], 7),
           deleteCase([], 1),
+        ],
+      },
+    ],
+    [
+      unionFind.id,
+      {
+        resultKind: "integers",
+        cases: [
+          unionCase(1, []),
+          unionCase(4, []),
+          unionCase(4, [
+            [0, 1],
+            [2, 3],
+          ]),
+          unionCase(5, [
+            [0, 1],
+            [2, 1],
+            [3, 4],
+            [1, 4],
+            [4, 0],
+          ]),
+          unionCase(6, [
+            [5, 4],
+            [4, 3],
+            [3, 2],
+            [2, 1],
+            [1, 0],
+            [0, 5],
+          ]),
+          unionCase(8, [
+            [0, 1],
+            [2, 3],
+            [1, 3],
+            [4, 5],
+            [6, 7],
+            [5, 7],
+            [3, 7],
+            [0, 6],
+          ]),
         ],
       },
     ],

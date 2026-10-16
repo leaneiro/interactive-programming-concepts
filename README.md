@@ -6,14 +6,15 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 
 ## What is inside
 
-| Algorithm      | Structure          | Languages                                              |
-| -------------- | ------------------ | ------------------------------------------------------ |
-| Bubble Sort    | Array              | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
-| Selection Sort | Array              | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
-| BST Search     | Binary search tree | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
-| BST Insert     | Binary search tree | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
-| BST Delete     | Binary search tree | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
-| BFS            | Graph              | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| Algorithm      | Structure           | Languages                                              |
+| -------------- | ------------------- | ------------------------------------------------------ |
+| Bubble Sort    | Array               | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| Selection Sort | Array               | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| BST Search     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| BST Insert     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| BST Delete     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| Union-Find     | Disjoint-set forest | Kotlin                                                 |
+| BFS            | Graph               | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 
 The studio has a timeline you can scrub, a history you can click, a memory and variables panel, and light and dark themes.
 
@@ -66,7 +67,7 @@ The whole design is four small ideas.
 
 **A snippet has to work.** The code on screen is not just text: `npm run verify:snippets` builds a small program around each snippet, runs it in its own language, and compares the results with what the tracer produced for the same inputs.
 
-**A view draws a state.** `VisualState` is a union of `ArrayState`, `TreeState` and `GraphState`, and each one has a React component that renders it.
+**A view draws a state.** `VisualState` is a union of `ArrayState`, `TreeState`, `GraphState` and `ForestState`, and each one has a React component that renders it.
 
 Nothing mutable sits in between. Playing, scrubbing the timeline and switching language all come down to showing `steps[stepIndex]`.
 

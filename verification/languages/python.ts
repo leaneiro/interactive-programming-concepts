@@ -1,7 +1,12 @@
 import { loadPyodide, type PyodideInterface } from "pyodide";
 import prelude from "../preludes/python.txt?raw";
 import type { Argument, ResultKind } from "../verification";
-import { listAdjacency, writeCalls, type LanguageAdapter } from "./adapter";
+import {
+  cannotHandle,
+  listAdjacency,
+  writeCalls,
+  type LanguageAdapter,
+} from "./adapter";
 
 let interpreterLoading: Promise<PyodideInterface> | null = null;
 
@@ -23,6 +28,8 @@ function renderArgument(argument: Argument): string {
       return `build_tree(${JSON.stringify(argument.values)})`;
     case "graph":
       return JSON.stringify(Object.fromEntries(listAdjacency(argument.graph)));
+    case "pairs":
+      return cannotHandle("Python", argument.kind);
   }
 }
 

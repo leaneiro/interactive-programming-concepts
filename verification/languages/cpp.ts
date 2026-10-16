@@ -8,6 +8,7 @@ import {
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
 import {
+  cannotHandle,
   listAdjacency,
   quoteAll,
   writeCalls,
@@ -35,6 +36,8 @@ function renderArgument(argument: Argument): string {
 
       return `Graph{${entries.join(", ")}}`;
     }
+    case "pairs":
+      return cannotHandle("C++", argument.kind);
   }
 }
 

@@ -8,6 +8,7 @@ import {
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
 import {
+  cannotHandle,
   listAdjacency,
   quoteAll,
   writeCalls,
@@ -32,6 +33,8 @@ function renderArgument(argument: Argument): string {
 
       return `Map.ofEntries(${entries.join(", ")})`;
     }
+    case "pairs":
+      return cannotHandle("Java", argument.kind);
   }
 }
 

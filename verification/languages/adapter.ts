@@ -31,3 +31,9 @@ export function listAdjacency(graph: Graph): [string, string[]][] {
 export function quoteAll(texts: readonly string[]): string {
   return texts.map((text) => JSON.stringify(text)).join(", ");
 }
+
+export function cannotHandle(languageName: string, kind: string): never {
+  throw new Error(
+    `The ${languageName} adapter does not handle "${kind}" values yet. Teach it in verification/languages before adding this snippet.`,
+  );
+}

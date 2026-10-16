@@ -34,6 +34,13 @@ function renderArgument(argument: Argument): string {
 
       return `mapOf(${entries.join(", ")})`;
     }
+    case "pairs": {
+      const entries = argument.pairs.map(
+        ([first, second]) => `${first} to ${second}`,
+      );
+
+      return `listOf<Pair<Int, Int>>(${entries.join(", ")})`;
+    }
   }
 }
 

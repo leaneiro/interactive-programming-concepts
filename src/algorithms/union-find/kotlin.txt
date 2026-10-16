@@ -1,0 +1,22 @@
+fun unionFind(n: Int, pairs: List<Pair<Int, Int>>): IntArray {
+    val parent = IntArray(n) { it }
+    for ((a, b) in pairs) {
+        union(parent, a, b)
+    }
+    return parent
+}
+
+fun find(parent: IntArray, x: Int): Int {
+    if (parent[x] != x) {
+        parent[x] = find(parent, parent[x])
+    }
+    return parent[x]
+}
+
+fun union(parent: IntArray, a: Int, b: Int) {
+    val rootA = find(parent, a)
+    val rootB = find(parent, b)
+    if (rootA != rootB) {
+        parent[rootB] = rootA
+    }
+}

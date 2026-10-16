@@ -5,7 +5,8 @@ export type Argument =
   | { kind: "integer"; value: number }
   | { kind: "text"; value: string }
   | { kind: "tree"; values: readonly number[] }
-  | { kind: "graph"; graph: Graph };
+  | { kind: "graph"; graph: Graph }
+  | { kind: "pairs"; pairs: readonly (readonly [number, number])[] };
 
 export type ResultKind = "integers" | "boolean" | "texts" | "treeInOrder";
 
@@ -31,6 +32,8 @@ export function describeArgument(argument: Argument): string {
       return `tree${JSON.stringify(argument.values)}`;
     case "graph":
       return `graph(${argument.graph.edges.map((edge) => edge.join("-")).join(" ")})`;
+    case "pairs":
+      return `pairs${JSON.stringify(argument.pairs)}`;
   }
 }
 
@@ -52,4 +55,10 @@ export function tree(values: readonly number[]): Argument {
 
 export function graphOf(graph: Graph): Argument {
   return { kind: "graph", graph };
+}
+
+export function pairsOf(
+  pairs: readonly (readonly [number, number])[],
+): Argument {
+  return { kind: "pairs", pairs };
 }
