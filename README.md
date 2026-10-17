@@ -13,7 +13,7 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 | BST Search     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | BST Insert     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | BST Delete     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
-| Union-Find     | Disjoint-set forest | Kotlin                                                 |
+| Union-Find     | Disjoint-set forest | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | BFS            | Graph               | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 
 The studio has a timeline you can scrub, a history you can click, a memory and variables panel, and light and dark themes.

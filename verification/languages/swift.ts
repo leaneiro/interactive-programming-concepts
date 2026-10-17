@@ -8,7 +8,6 @@ import {
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
 import {
-  cannotHandle,
   listAdjacency,
   quoteAll,
   writeCalls,
@@ -35,8 +34,13 @@ function renderArgument(argument: Argument): string {
 
       return `[${entries.join(", ")}]`;
     }
-    case "pairs":
-      return cannotHandle("Swift", argument.kind);
+    case "pairs": {
+      const entries = argument.pairs.map(
+        ([first, second]) => `(${first}, ${second})`,
+      );
+
+      return `[${entries.join(", ")}]`;
+    }
   }
 }
 

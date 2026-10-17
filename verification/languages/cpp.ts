@@ -8,7 +8,6 @@ import {
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
 import {
-  cannotHandle,
   listAdjacency,
   quoteAll,
   writeCalls,
@@ -36,8 +35,13 @@ function renderArgument(argument: Argument): string {
 
       return `Graph{${entries.join(", ")}}`;
     }
-    case "pairs":
-      return cannotHandle("C++", argument.kind);
+    case "pairs": {
+      const entries = argument.pairs.map(
+        ([first, second]) => `{${first}, ${second}}`,
+      );
+
+      return `vector<pair<int, int>>{${entries.join(", ")}}`;
+    }
   }
 }
 
@@ -46,7 +50,7 @@ function readResult(resultKind: ResultKind, call: string): string {
 }
 
 export const cppAdapter: LanguageAdapter = {
-  entryPointPattern: /(\w+)\s*\(/,
+  entryPointPattern: /(\w+)\s*\([^;{]*\)\s*\{/,
 
   findToolchainVersion: () =>
     findCommandVersion(compiler, ["--version"], /(\d+\.\d+(?:\.\d+)?)/),

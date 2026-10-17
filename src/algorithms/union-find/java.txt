@@ -1,0 +1,22 @@
+int[] unionFind(int n, int[][] pairs) {
+    int[] parent = IntStream.range(0, n).toArray();
+    for (int[] pair : pairs) {
+        union(parent, pair[0], pair[1]);
+    }
+    return parent;
+}
+
+int find(int[] parent, int x) {
+    if (parent[x] != x) {
+        parent[x] = find(parent, parent[x]);
+    }
+    return parent[x];
+}
+
+void union(int[] parent, int a, int b) {
+    int rootA = find(parent, a);
+    int rootB = find(parent, b);
+    if (rootA != rootB) {
+        parent[rootB] = rootA;
+    }
+}

@@ -1,0 +1,22 @@
+fn union_find(n: usize, pairs: &[(usize, usize)]) -> Vec<usize> {
+    let mut parent: Vec<usize> = (0..n).collect();
+    for &(a, b) in pairs {
+        union(&mut parent, a, b);
+    }
+    parent
+}
+
+fn find(parent: &mut [usize], x: usize) -> usize {
+    if parent[x] != x {
+        parent[x] = find(parent, parent[x]);
+    }
+    parent[x]
+}
+
+fn union(parent: &mut [usize], a: usize, b: usize) {
+    let root_a = find(parent, a);
+    let root_b = find(parent, b);
+    if root_a != root_b {
+        parent[root_b] = root_a;
+    }
+}

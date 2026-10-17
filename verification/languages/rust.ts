@@ -8,7 +8,6 @@ import {
 } from "../process";
 import type { Argument, ResultKind } from "../verification";
 import {
-  cannotHandle,
   listAdjacency,
   quoteAll,
   writeCalls,
@@ -36,8 +35,13 @@ function renderArgument(argument: Argument): string {
 
       return `build_graph(vec![${entries.join(", ")}])`;
     }
-    case "pairs":
-      return cannotHandle("Rust", argument.kind);
+    case "pairs": {
+      const entries = argument.pairs.map(
+        ([first, second]) => `(${first}, ${second})`,
+      );
+
+      return `vec![${entries.join(", ")}]`;
+    }
   }
 }
 
@@ -74,7 +78,9 @@ export const rustAdapter: LanguageAdapter = {
       verification,
       (argument, position) => {
         const isBuiltValue =
-          argument.kind === "tree" || argument.kind === "graph";
+          argument.kind === "tree" ||
+          argument.kind === "graph" ||
+          argument.kind === "pairs";
         const borrow = isBuiltValue && borrowedParameters[position] ? "&" : "";
 
         return `${borrow}${renderArgument(argument)}`;

@@ -1,0 +1,22 @@
+func unionFind(_ n: Int, _ pairs: [(Int, Int)]) -> [Int] {
+    var parent = Array(0..<n)
+    for (a, b) in pairs {
+        union(&parent, a, b)
+    }
+    return parent
+}
+
+func find(_ parent: inout [Int], _ x: Int) -> Int {
+    if parent[x] != x {
+        parent[x] = find(&parent, parent[x])
+    }
+    return parent[x]
+}
+
+func union(_ parent: inout [Int], _ a: Int, _ b: Int) {
+    let rootA = find(&parent, a)
+    let rootB = find(&parent, b)
+    if rootA != rootB {
+        parent[rootB] = rootA
+    }
+}

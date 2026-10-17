@@ -147,7 +147,7 @@ export function traceUnionFind({
     region: "signature",
     caption: rich`${code(elementCount)} elements, ${code(pairs.length)} pairs`,
     historyEntry: `n = ${elementCount}`,
-    explanation: rich`Union-find keeps elements in disjoint sets with a single array, ${code("parent")}. Each element points to another element of its set, and the one that points to itself is the root that represents the set. union joins the sets of two elements, and find returns the root of an element.`,
+    explanation: rich`Union-find keeps elements in disjoint sets with a single array, ${code("parent")}. Each element points to another element of its set, and the one that points to itself is the root that represents the set. A union joins the sets of two elements, and a find returns the root of an element.`,
   });
   record({
     region: "initialize",
@@ -170,7 +170,7 @@ export function traceUnionFind({
       historyEntry: `union(${first},${second})`,
       focusedElements: [first, second],
       activeVariables: ["first", "second"],
-      explanation: rich`The loop takes the next pair and asks union to join the sets that contain ${code(first)} and ${code(second)} (${linesOf("nextPair")}). First it needs the root of each one.`,
+      explanation: rich`The loop takes the next pair and joins the sets that contain ${code(first)} and ${code(second)} (${linesOf("nextPair")}). First it needs the root of each one.`,
     });
 
     const firstRoot = find(first);
@@ -206,7 +206,7 @@ export function traceUnionFind({
         historyEntry: `${firstRoot} = ${secondRoot} → skip`,
         focusedElements: [firstRoot],
         activeVariables: ["firstRoot", "secondRoot"],
-        explanation: rich`Both roots are ${code(firstRoot)}, so ${code(first)} and ${code(second)} are already in the same set (${linesOf("compareRoots")}). union leaves the array as it is.`,
+        explanation: rich`Both roots are ${code(firstRoot)}, so ${code(first)} and ${code(second)} are already in the same set (${linesOf("compareRoots")}), and the array stays as it is.`,
       });
       unionStatuses[pairIndex] = "skipped";
       continue;

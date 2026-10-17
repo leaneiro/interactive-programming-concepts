@@ -1,0 +1,18 @@
+def union_find(n, pairs):
+    parent = list(range(n))
+    for a, b in pairs:
+        union(parent, a, b)
+    return parent
+
+
+def find(parent, x):
+    if parent[x] != x:
+        parent[x] = find(parent, parent[x])
+    return parent[x]
+
+
+def union(parent, a, b):
+    root_a = find(parent, a)
+    root_b = find(parent, b)
+    if root_a != root_b:
+        parent[root_b] = root_a

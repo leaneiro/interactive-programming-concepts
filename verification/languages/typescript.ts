@@ -4,12 +4,7 @@ import ts from "typescript";
 import prelude from "../preludes/typescript.txt?raw";
 import { runCommand, withTemporaryDirectory } from "../process";
 import type { Argument, ResultKind } from "../verification";
-import {
-  cannotHandle,
-  listAdjacency,
-  writeCalls,
-  type LanguageAdapter,
-} from "./adapter";
+import { listAdjacency, writeCalls, type LanguageAdapter } from "./adapter";
 
 const compilerOptions: ts.CompilerOptions = {
   strict: true,
@@ -37,7 +32,7 @@ function renderArgument(argument: Argument): string {
     case "graph":
       return `{ edges: new Map(${JSON.stringify(listAdjacency(argument.graph))}) }`;
     case "pairs":
-      return cannotHandle("TypeScript", argument.kind);
+      return JSON.stringify(argument.pairs);
   }
 }
 
