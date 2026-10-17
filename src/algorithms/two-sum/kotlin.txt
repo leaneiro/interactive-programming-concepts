@@ -1,0 +1,11 @@
+fun twoSum(nums: IntArray, target: Int): IntArray {
+    val seen = mutableMapOf<Int, Int>()
+    for ((i, num) in nums.withIndex()) {
+        val complement = target - num
+        if (complement in seen) {
+            return intArrayOf(seen.getValue(complement), i)
+        }
+        seen[num] = i
+    }
+    return intArrayOf()
+}

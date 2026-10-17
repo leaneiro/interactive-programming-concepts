@@ -11,6 +11,8 @@ import { breadthFirstSearch } from "@/algorithms/graph-bfs";
 import { traceBreadthFirstSearch } from "@/algorithms/graph-bfs/trace";
 import { selectionSort } from "@/algorithms/selection-sort";
 import { traceSelectionSort } from "@/algorithms/selection-sort/trace";
+import { twoSum } from "@/algorithms/two-sum";
+import { traceTwoSum } from "@/algorithms/two-sum/trace";
 import { unionFind } from "@/algorithms/union-find";
 import {
   traceUnionFind,
@@ -85,6 +87,15 @@ function verifySorting(
   };
 }
 
+function pairCase(values: readonly number[], target: number): VerificationCase {
+  const steps = traceTwoSum({ values, target });
+
+  return {
+    arguments: [integers(values), integer(target)],
+    expected: lastOf(steps).state.matchedIndices,
+  };
+}
+
 function searchCase(
   values: readonly number[],
   target: number,
@@ -146,6 +157,21 @@ export const verifications: ReadonlyMap<string, AlgorithmVerification> =
   new Map<string, AlgorithmVerification>([
     [bubbleSort.id, verifySorting(traceBubbleSort)],
     [selectionSort.id, verifySorting(traceSelectionSort)],
+    [
+      twoSum.id,
+      {
+        resultKind: "integers",
+        cases: [
+          pairCase([2, 7, 11, 15], 9),
+          pairCase([3, 2, 4], 6),
+          pairCase([3, 3], 6),
+          pairCase([5, 1, 8, 3, 9, 4], 13),
+          pairCase([-3, 4, 3, 90], 0),
+          pairCase([1, 2, 3], 7),
+          pairCase([], 5),
+        ],
+      },
+    ],
     [
       bstSearch.id,
       {

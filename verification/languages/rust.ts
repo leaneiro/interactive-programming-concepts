@@ -77,11 +77,9 @@ export const rustAdapter: LanguageAdapter = {
       entryPoint,
       verification,
       (argument, position) => {
-        const isBuiltValue =
-          argument.kind === "tree" ||
-          argument.kind === "graph" ||
-          argument.kind === "pairs";
-        const borrow = isBuiltValue && borrowedParameters[position] ? "&" : "";
+        const isCollection =
+          argument.kind !== "integer" && argument.kind !== "text";
+        const borrow = isCollection && borrowedParameters[position] ? "&" : "";
 
         return `${borrow}${renderArgument(argument)}`;
       },
