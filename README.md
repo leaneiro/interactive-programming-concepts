@@ -68,7 +68,7 @@ The whole design is four small ideas.
 
 **A snippet has to work.** The code on screen is not just text: `npm run verify:snippets` builds a small program around each snippet, runs it in its own language, and compares the results with what the tracer produced for the same inputs.
 
-**A view draws a state.** `VisualState` is a union of `ArrayState`, `TreeState`, `GraphState`, `ForestState` and `HashMapState`, and each one has a React component that renders it.
+**A view draws a state.** `VisualState` is a union of `ArrayState`, `TreeState`, `GraphState`, `ForestState`, `HashMapState` and `SearchRangeState`, and each one has a React component that renders it.
 
 Nothing mutable sits in between. Playing, scrubbing the timeline and switching language all come down to showing `steps[stepIndex]`.
 

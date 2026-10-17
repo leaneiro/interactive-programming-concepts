@@ -67,6 +67,21 @@ export function MemorySection({ state }: MemorySectionProps) {
           }))}
         />
       );
+    case "searchRange":
+      return (
+        <MemoryRow
+          label="Memory"
+          detail={`${state.name}[${state.values.length}]`}
+          note={decorativeAddress}
+          cellSizing="fill"
+          cells={state.values.map((value, valueIndex) => ({
+            key: valueIndex,
+            label: valueIndex,
+            value,
+            isActive: valueIndex === state.middle,
+          }))}
+        />
+      );
     case "tree":
       return null;
   }
