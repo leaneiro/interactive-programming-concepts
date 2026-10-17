@@ -52,6 +52,21 @@ export function MemorySection({ state }: MemorySectionProps) {
           }))}
         />
       );
+    case "hashMap":
+      return (
+        <MemoryRow
+          label="Memory"
+          detail={`${state.arrayName}[${state.values.length}]`}
+          note={decorativeAddress}
+          cellSizing="fill"
+          cells={state.values.map((value, valueIndex) => ({
+            key: valueIndex,
+            label: valueIndex,
+            value,
+            isActive: valueIndex === state.currentIndex,
+          }))}
+        />
+      );
     case "tree":
       return null;
   }
