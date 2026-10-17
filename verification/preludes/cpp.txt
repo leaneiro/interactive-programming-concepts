@@ -53,6 +53,10 @@ vector<int> listInOrder(TreeNode* node) {
     return values;
 }
 
+void printResult(int result) {
+    cout << result << endl;
+}
+
 void printResult(bool result) {
     cout << (result ? "true" : "false") << endl;
 }

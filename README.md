@@ -10,6 +10,7 @@ Pick an algorithm and press play. Every step highlights the lines being executed
 | -------------- | ------------------- | ------------------------------------------------------ |
 | Bubble Sort    | Array               | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | Selection Sort | Array               | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
+| Binary Search  | Sorted array        | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | Two Sum        | Array and hash map  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | BST Search     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |
 | BST Insert     | Binary search tree  | TypeScript, Python, Java, C++, Go, Rust, Swift, Kotlin |

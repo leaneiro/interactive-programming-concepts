@@ -8,7 +8,8 @@ export type Argument =
   | { kind: "graph"; graph: Graph }
   | { kind: "pairs"; pairs: readonly (readonly [number, number])[] };
 
-export type ResultKind = "integers" | "boolean" | "texts" | "treeInOrder";
+export type ResultKind =
+  "index" | "integers" | "boolean" | "texts" | "treeInOrder";
 
 export interface VerificationCase {
   arguments: readonly Argument[];

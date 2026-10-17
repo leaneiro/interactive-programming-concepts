@@ -48,6 +48,7 @@ function writeOutput(resultKind: ResultKind, call: string): string {
   switch (resultKind) {
     case "integers":
       return `println(${call}.contentToString())`;
+    case "index":
     case "boolean":
       return `println(${call})`;
     case "treeInOrder":

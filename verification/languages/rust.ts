@@ -62,7 +62,14 @@ function listBorrowedParameters(
 }
 
 function readResult(resultKind: ResultKind, call: string): string {
-  return resultKind === "treeInOrder" ? `list_in_order(&${call})` : call;
+  switch (resultKind) {
+    case "index":
+      return `${call}.map_or(-1, |index| index as i64)`;
+    case "treeInOrder":
+      return `list_in_order(&${call})`;
+    default:
+      return call;
+  }
 }
 
 export const rustAdapter: LanguageAdapter = {

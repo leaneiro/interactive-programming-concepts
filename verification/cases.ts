@@ -1,4 +1,6 @@
 import type { Step } from "@/algorithms/algorithm";
+import { binarySearch } from "@/algorithms/binary-search";
+import { traceBinarySearch } from "@/algorithms/binary-search/trace";
 import { bstDelete } from "@/algorithms/bst-delete";
 import { traceBstDelete } from "@/algorithms/bst-delete/trace";
 import { bstInsert } from "@/algorithms/bst-insert";
@@ -44,6 +46,9 @@ const arraysToSort = [
   [42, 7, 19, 3, 88, 61, 7, 15],
 ];
 
+const sortedValues = [3, 8, 12, 19, 27, 31, 40, 46, 52, 60, 71, 85];
+const missingIndex = -1;
+
 const balancedTreeValues = [50, 30, 70, 20, 40, 60, 80];
 const deepTreeValues = [50, 30, 70, 20, 40, 60, 80, 35, 45, 65, 10];
 
@@ -84,6 +89,19 @@ function verifySorting(
       arguments: [integers(input)],
       expected: lastOf(trace(input)).state.values,
     })),
+  };
+}
+
+function indexCase(
+  values: readonly number[],
+  target: number,
+): VerificationCase {
+  const lastStep = lastOf(traceBinarySearch({ values, target }));
+  const { middle, outcome } = lastStep.state;
+
+  return {
+    arguments: [integers(values), integer(target)],
+    expected: outcome === "found" ? middle : missingIndex,
   };
 }
 
@@ -157,6 +175,20 @@ export const verifications: ReadonlyMap<string, AlgorithmVerification> =
   new Map<string, AlgorithmVerification>([
     [bubbleSort.id, verifySorting(traceBubbleSort)],
     [selectionSort.id, verifySorting(traceSelectionSort)],
+    [
+      binarySearch.id,
+      {
+        resultKind: "index",
+        cases: [
+          ...[3, 27, 31, 46, 85, 1, 30, 99].map((target) =>
+            indexCase(sortedValues, target),
+          ),
+          indexCase([7], 7),
+          indexCase([7], 5),
+          indexCase([], 4),
+        ],
+      },
+    ],
     [
       twoSum.id,
       {

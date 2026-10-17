@@ -46,6 +46,7 @@ function writeOutput(resultKind: ResultKind, call: string): string {
   switch (resultKind) {
     case "integers":
       return `System.out.println(Arrays.toString(${call}));`;
+    case "index":
     case "boolean":
       return `System.out.println(${call});`;
     case "treeInOrder":

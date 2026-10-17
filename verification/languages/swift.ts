@@ -45,7 +45,14 @@ function renderArgument(argument: Argument): string {
 }
 
 function readResult(resultKind: ResultKind, call: string): string {
-  return resultKind === "treeInOrder" ? `listInOrder(${call})` : call;
+  switch (resultKind) {
+    case "index":
+      return `${call} ?? -1`;
+    case "treeInOrder":
+      return `listInOrder(${call})`;
+    default:
+      return call;
+  }
 }
 
 export const swiftAdapter: LanguageAdapter = {
